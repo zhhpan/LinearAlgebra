@@ -1,0 +1,637 @@
+{% extends "bootstrap/base.html" %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="container mt-3">
+        <a href="/" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>返回主页面
+        </a>
+    </div>
+    <!-- 理论区保持不变 -->
+    <section class="theory-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <div class="equation-card">
+                        <h2 class="equation-title">线性方程组基础</h2>
+
+                        <h4 class="mt-4">一、线性方程组与向量组的关系</h4>
+                        <div class="formula-box">
+                            <p>一个$n$元$m$次线性方程组：</p>
+                            <p>\[
+                            \begin{cases}
+                            a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1 \\
+                            a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2 \\
+                            \vdots \\
+                            a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n = b_m
+                            \end{cases}
+                            \]</p>
+
+                            <p>矩阵形式表示：</p>
+                            <p>\[ A \vec{x} = \vec{b} \]</p>
+
+                            <p>具体表达为：</p>
+                            <p>\[
+                            A = \begin{pmatrix}
+                            a_{11} & a_{12} & \dots & a_{1n} \\
+                            a_{21} & a_{22} & \dots & a_{2n} \\
+                            \vdots & \vdots & \ddots & \vdots \\
+                            a_{m1} & a_{m2} & \dots & a_{mn}
+                            \end{pmatrix},\quad
+                            \vec{x} = \begin{pmatrix}
+                            x_1 \\ x_2 \\ \vdots \\ x_n
+                            \end{pmatrix},\quad
+                            \vec{b} = \begin{pmatrix}
+                            b_1 \\ b_2 \\ \vdots \\ b_m
+                            \end{pmatrix}
+                            \]</p>
+
+                            <p>也可看作向量组的线性组合：</p>
+                            <p>\[
+                            x_1 \vec{a}_1 + x_2 \vec{a}_2 + \dots + x_n \vec{a}_n = \vec{b}
+                            \]</p>
+                            <p>其中$\vec{a}_i$是$A$的第$i$列向量。</p>
+                        </div>
+
+                        <h4 class="mt-4">二、齐次线性方程组</h4>
+                        <div class="formula-box">
+                            <p><strong>定义：</strong> 常数项全为零：</p>
+                            <p>\[ A \vec{x} = \vec{0} \]</p>
+
+                            <p><strong>解的性质：</strong></p>
+                            <p>若$\vec{x}_1$、$\vec{x}_2$是解，则：</p>
+                            <p>\[
+                            \forall c_1, c_2 \in \mathbb{R}, \quad c_1 \vec{x}_1 + c_2 \vec{x}_2 \text{也是解}
+                            \]</p>
+
+                            <p><strong>有解条件：</strong></p>
+                            <p>\[
+                            \operatorname{rank}(A) = r < n \quad \Rightarrow \quad \text{有} \ n - r \ \text{个自由变量，存在非零解}
+                            \]</p>
+
+                            <p><strong>基础解系：</strong></p>
+                            <p>\[
+                            \vec{x} = c_1 \vec{\xi}_1 + c_2 \vec{\xi}_2 + \dots + c_k \vec{\xi}_k
+                            \]</p>
+                            <p>其中$k = n - r$，$\{\vec{\xi}_1, \dots, \vec{\xi}_k\}$为线性无关的基础解系。</p>
+                        </div>
+
+                        <h4 class="mt-4">三、非齐次线性方程组</h4>
+                        <div class="formula-box">
+                            <p><strong>定义：</strong> 常数项不全为零：</p>
+                            <p>\[ A \vec{x} = \vec{b} \]</p>
+
+                            <p><strong>有解条件：</strong></p>
+                            <p>\[
+                            \operatorname{rank}(A) = \operatorname{rank}(A|\vec{b}) = r
+                            \]</p>
+
+                            <p><strong>解的结构：</strong></p>
+                            <p>若特解$\vec{x}_p$已知，则通解：</p>
+                            <p>\[
+                            \vec{x} = \vec{x}_p + \vec{x}_h
+                            \]</p>
+
+                            <p>其中$\vec{x}_h$是对应的齐次方程$A \vec{x} = \vec{0}$的通解：</p>
+                            <p>\[
+                            \vec{x}_h = c_1 \vec{\xi}_1 + c_2 \vec{\xi}_2 + \dots + c_k \vec{\xi}_k
+                            \]</p>
+
+                            <p>因此非齐次方程的通解结构为：</p>
+                            <p>\[
+                            \vec{x} = \vec{x}_p + c_1 \vec{\xi}_1 + c_2 \vec{\xi}_2 + \dots + c_k \vec{\xi}_k
+                            \]</p>
+                        </div>
+
+                        <h4 class="mt-4">四、求解方法</h4>
+                        <div class="formula-box">
+                            <p><strong>1. 克莱姆法则（Cramer's Rule）</strong></p>
+                            <p>适用于$n$元$n$次线性方程组，且：</p>
+                            <p>\[
+                            D = |A| \neq 0
+                            \]</p>
+
+                            <p>解为：</p>
+                            <p>\[
+                            x_i = \frac{D_i}{D}, \quad i = 1,2,\dots,n
+                            \]</p>
+
+                            <p>其中$D_i$为将$A$的第$i$列替换为常数向量$\vec{b}$后的行列式。</p>
+
+                            <p><strong>2. 高斯消元法</strong></p>
+                            <p>增广矩阵形式：</p>
+                            <p>\[
+                            \left( A | \vec{b} \right)
+                            \]</p>
+
+                            <p>通过初等行变换，化为行阶梯形矩阵：</p>
+                            <p>\[
+                            \begin{pmatrix}
+                            1 & * & * & * \\
+                            0 & 1 & * & * \\
+                            0 & 0 & 1 & *
+                            \end{pmatrix}
+                            \]</p>
+
+                            <p>回代即可求出解的具体值。</p>
+
+                            <p>若出现形如：</p>
+                            <p>\[
+                            0 = c \quad (c \neq 0)
+                            \]</p>
+                            <p>则方程无解；
+                            若有自由变量，解为无穷多解。</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 演示区 -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <h2 class="math-title mb-4">交互演示</h2>
+
+                    <div class="math-card mb-4">
+                        <form method="POST">
+                            <!-- 方程输入表格 -->
+                            <div class="equation-table">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead >
+                                            <tr>
+                                                <th>方程</th>
+                                                <th>x系数</th>
+                                                <th>y系数</th>
+                                                <th>z系数</th>
+                                                <th>常数项</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>方程1</td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="a1" value="{{ request.form.a1 }}" placeholder="a₁" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="b1" value="{{ request.form.b1 }}" placeholder="b₁" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="c1" value="{{ request.form.c1 }}" placeholder="c₁" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="d1" value="{{ request.form.d1 }}" placeholder="d₁" required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>方程2</td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="a2" value="{{ request.form.a2 }}" placeholder="a₂" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="b2" value="{{ request.form.b2 }}" placeholder="b₂" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="c2" value="{{ request.form.c2 }}" placeholder="c₂" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="d2" value="{{ request.form.d2 }}" placeholder="d₂" required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>方程3</td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="a3" value="{{ request.form.a3 }}" placeholder="a₃" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="b3" value="{{ request.form.b3 }}" placeholder="b₃" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="c3" value="{{ request.form.c3 }}" placeholder="c₃" required>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" class="form-control" name="d3" value="{{ request.form.d3 }}" placeholder="d₃" required>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+{#                                <div class="col-md-6">#}
+{#                                    <div class="form-check">#}
+{#                                        <input class="form-check-input" type="checkbox"#}
+{#                                               id="showSteps" name="showSteps">#}
+{#                                        <label class="form-check-label" for="showSteps">#}
+{#                                            显示详细计算步骤#}
+{#                                        </label>#}
+{#                                    </div>#}
+{#                                </div>#}
+                                <div class="row mb-3">
+                                    <label class="col-form-label col-md-2">解法选择：</label>
+                                    <div class="col-md-10">
+                                        <div class="btn-group" role="group">
+                                            <input type="radio" class="btn-check" name="method" id="gauss" value="gauss" autocomplete="off" {% if method == 'gauss' %}checked{% endif %}>
+                                            <label class="btn btn-outline-primary" for="gauss">高斯消元法</label>
+
+                                            <input type="radio" class="btn-check" name="method" id="cramer" value="cramer" autocomplete="off" {% if method == 'cramer' %}checked{% endif %}>
+                                            <label class="btn btn-outline-primary" for="cramer">克莱姆法则</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-calculator me-2"></i>立即求解
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- 结果展示区保持不变 -->
+                    {% if result %}
+                    <div class="math-card">
+{#                        <h4 class="mb-3">求解结果</h4>#}
+{#                        <p><strong>判断：</strong>{{ result }}</p>#}
+
+                        {% if latex_solution %}
+                        <p><strong>解：</strong> <span class="katex-render">{{ latex_solution|safe }}</span></p>
+                        {% endif %}
+
+                        {% if image_url %}
+                        <div class="mt-3">
+                            <img src="{{ image_url }}" alt="三平面图像" class="img-fluid border rounded shadow">
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {% if result %}
+                    <div class="math-card mt-4">
+                        <h4>求解结果：</h4>
+                        <p><strong>{{ message }}</strong></p>
+                        <p>x = {{ result[0] }}, y = {{ result[1] }}, z = {{ result[2] }}</p>
+                        <img src="{{ url_for('plot_solve') }}" class="img-fluid mt-3" alt="平面图像">
+                    </div>
+                    {% elif message %}
+                    <div class="alert alert-warning mt-4">{{ message }}</div>
+                    {% endif %}
+
+                    {% if method == 'cramer' and det_data %}
+                    <!-- 克莱姆法则步骤展示 -->
+                    <div class="math-card mt-4">
+                        <h4 class="mb-3">📐 克莱姆法则计算步骤</h4>
+
+                        <!-- 步骤1：系数矩阵行列式 -->
+                        <div class="step-card mb-4">
+                            <div class="step-header text-primary">
+                                <i class="fas fa-calculator me-2"></i>步骤 1：计算系数矩阵行列式 D
+                            </div>
+                            <div class="step-body">
+                                <div class="katex-render">
+                                    \[ D = \begin{vmatrix}
+                                    {{ det_data.D.latex }}
+                                    \end{vmatrix} = {{ "%.3f"|format(det_data.D.value) }} \]
+                                </div>
+                            </div>
+                        </div>
+
+                        {# 仅当行列式D≠0时显示后续步骤 #}
+                        {% if det_data.D.value|abs > 1e-6 %}
+                            <!-- 步骤2：Dx行列式 -->
+                            <div class="step-card mb-4">
+                                <div class="step-header text-success">
+                                    <i class="fas fa-exchange-alt me-2"></i>步骤 2：替换第一列计算 Dx
+                                </div>
+                                <div class="step-body">
+                                    <div class="katex-render">
+                                        \[ D_x = \begin{vmatrix}
+                                        {{ det_data.Dx.latex }}
+                                        \end{vmatrix} = {{ "%.3f"|format(det_data.Dx.value) }} \]
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 步骤3：Dy行列式 -->
+                            <div class="step-card mb-4">
+                                <div class="step-header text-info">
+                                    <i class="fas fa-retweet me-2"></i>步骤 3：替换第二列计算 Dy
+                                </div>
+                                <div class="step-body">
+                                    <div class="katex-render">
+                                        \[ D_y = \begin{vmatrix}
+                                        {{ det_data.Dy.latex }}
+                                        \end{vmatrix} = {{ "%.3f"|format(det_data.Dy.value) }} \]
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 步骤4：Dz行列式 -->
+                            <div class="step-card mb-4">
+                                <div class="step-header text-warning">
+                                    <i class="fas fa-sync-alt me-2"></i>步骤 4：替换第三列计算 Dz
+                                </div>
+                                <div class="step-body">
+                                    <div class="katex-render">
+                                        \[ D_z = \begin{vmatrix}
+                                        {{ det_data.Dz.latex }}
+                                        \end{vmatrix} = {{ "%.3f"|format(det_data.Dz.value) }} \]
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 最终计算结果 -->
+                            <div class="result-card bg-light p-3 rounded">
+                                <h5 class="text-danger mb-3">🎉 最终计算结果</h5>
+                                <div class="katex-render">
+                                    \[
+                                    \begin{aligned}
+                                    x &= \frac{D_x}{D} = \frac{ {{ "%.3f"|format(det_data.Dx.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[0] }} \\[2ex]
+                                    y &= \frac{D_y}{D} = \frac{ {{ "%.3f"|format(det_data.Dy.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[1] }} \\[2ex]
+                                    z &= \frac{D_z}{D} = \frac{ {{ "%.3f"|format(det_data.Dz.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[2] }}
+                                    \end{aligned}
+                                    \]
+                                </div>
+                            </div>
+                        {% else %}
+                            <!-- 行列式D=0时的错误提示 -->
+                            <div class="alert alert-danger mt-3">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                {% if det_data.error %}
+                                    {{ det_data.error }}
+                                {% else %}
+                                    行列式D = 0，无法应用克莱姆法则
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {% if method == 'gauss' and gauss_data %}
+                    <!-- 高斯消元步骤展示 -->
+                    <div class="math-card mt-4">
+                        <h4 class="mb-4">🔍 高斯消元过程（共 {{ gauss_data|length }} 步）</h4>
+
+                        <div class="timeline-steps">
+                            {% for step in gauss_data %}
+                            <div class="timeline-step {% if loop.last %}last-step{% endif %}">
+                                <div class="step-marker">
+                                    <span class="step-number">{{ loop.index }}</span>
+                                </div>
+                                <div class="step-content">
+                                    <h5 class="step-title text-primary">
+                                        <i class="fas fa-arrow-circle-right me-2"></i>{{ step.description }}
+                                    </h5>
+                                    <div class="matrix-display bg-white p-2 rounded shadow-sm">
+                                        <div class="katex-render">
+                                            \[ {{ step.latex }} \]
+                                        </div>
+                                    </div>
+                                    {% if not loop.last %}
+                                    <div class="step-arrow">
+                                        <i class="fas fa-angle-double-down text-muted"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- 最终结果 -->
+                        {% if result %}
+                        <div class="final-result bg-success text-white p-3 mt-4 rounded">
+                            <h5 class="mb-3">✅ 消元完成！最终解：</h5>
+                            <div class="katex-render fs-5">
+                                \[
+                                \begin{cases}
+                                x = {{ result[0] }} \\[2ex]
+                                y = {{ result[1] }} \\[2ex]
+                                z = {{ result[2] }}
+                                \end{cases}
+                                \]
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="static/katex/katex.min.css" rel="stylesheet">
+<script defer src="static/katex/katex.min.js"></script>
+<script defer src="static/katex/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '\\[', right: '\\]', display: true},
+                {left: '\\(', right: '\\)', display: false},
+                { left: '$', right: '$', display: false }
+            ]
+        });">
+</script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+.equation-table {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.equation-table table {
+    margin-bottom: 0;
+}
+
+.equation-table th {
+    background: #f8f9fa!important;  /* 浅灰色背景 */
+    color: #2b6cb0!important;       /* 主蓝色文字 */
+    font-weight: 600;              /* 加粗字体 */
+    border-bottom: 2px solid #dee2e6!important; /* 底部边框 */
+    vertical-align: middle;        /* 垂直居中 */
+    padding: 12px 15px;            /* 内边距 */
+}
+
+.equation-table td {
+    vertical-align: middle;
+    padding: 0.75rem;
+}
+
+.equation-table input {
+    width: 100%;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.equation-table input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+}
+
+@media (max-width: 768px) {
+    .equation-table th, 
+    .equation-table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .equation-table input {
+        padding: 0.3rem;
+    }
+}
+.equation-card {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-top: 2rem;
+    {#border-left: 5px solid var(--primary-blue);#}
+}
+
+.equation-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+}
+
+.matrix-inputs .form-control {
+    width: 80px;
+    height: 38px;
+    text-align: center;
+    font-size: 1.1rem;
+    border: 2px solid #2b6cb0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.matrix-inputs .form-control:focus {
+    border-color: #1c4f91;
+    box-shadow: 0 0 8px rgba(43,108,176,0.3);
+}
+
+.solution-box {
+    background: #fdfdfd;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.katex-display {
+    font-size: 1.2rem;
+}
+
+.step-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.step-header {
+    padding: 12px 20px;
+    border-bottom: 2px solid;
+    font-weight: 600;
+}
+
+.step-body {
+    padding: 15px 20px;
+}
+
+/* 时间线布局 */
+.timeline-steps {
+    position: relative;
+    padding-left: 40px;
+}
+
+.timeline-step {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.step-marker {
+    position: absolute;
+    left: -40px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border: 2px solid #4a90e2;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-weight: bold;
+    color: #4a90e2;
+}
+
+.step-content {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+
+.matrix-display {
+    overflow-x: auto;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.step-arrow {
+    text-align: center;
+    margin: 10px 0;
+    color: #6c757d;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .katex-render {
+        font-size: 0.9em;
+    }
+
+    .timeline-steps {
+        padding-left: 30px;
+    }
+
+    .step-marker {
+        left: -30px;
+        width: 25px;
+        height: 25px;
+        line-height: 21px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+// 自动聚焦到第一个输入框
+document.querySelector('input[name="a1"]').focus();
+
+// 输入验证
+document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9.\-]/g, '');
+    });
+});
+
+
+</script>
+{% endblock %}

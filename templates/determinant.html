@@ -1,0 +1,229 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}行列式解析与计算{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/static/katex/katex.min.css" rel="stylesheet">
+<style>
+    .theory-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 20px 0;
+        padding: 30px;
+        transition: transform 0.3s ease;
+    }
+    .matrix-input {
+        width: 70px;
+        text-align: center;
+        padding: 8px;
+        border: 2px solid #dee2e6;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+    .matrix-input:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+    }
+    .det-result {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        font-weight: bold;
+    }
+    .calculation-steps {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    /* 添加颜色定义 */
+    .katex .red { color: #e74c3c; }
+    .katex .blue { color: #3498db; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <a href="/" class="btn btn-outline-secondary mb-4">
+        <i class="fas fa-arrow-left me-2"></i>返回主页面
+    </a>
+
+    <!-- 理论知识部分 -->
+    <div class="theory-card">
+        <h2 class="border-bottom pb-2">行列式基础理论</h2>
+        
+        <div class="row g-4 mt-3">
+            <div class="col-md-6">
+                <div class="math-box">
+                <h4><i class="fas fa-calculator me-2"></i>基本定义</h4>
+                <div class="katex-render">
+                    二阶行列式：
+                    \[
+                    \begin{vmatrix}
+                    a & b \\
+                    c & d
+                    \end{vmatrix} = ad - bc
+                    \]
+                    三阶行列式（沙路法展开）：
+                    \[
+                    \begin{vmatrix}
+                    a_{11} & a_{12} & a_{13} \\
+                    a_{21} & a_{22} & a_{23} \\
+                    a_{31} & a_{32} & a_{33}
+                    \end{vmatrix}
+                    = \begin{aligned}
+                    &a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} \\
+                    &- a_{13}a_{22}a_{31} - a_{11}a_{23}a_{32} - a_{12}a_{21}a_{33}
+                    \end{aligned}
+                    \]
+                </div>
+            </div>
+
+            <div class="math-box mt-4">
+                <h4><i class="fas fa-project-diagram me-2"></i>展开步骤</h4>
+                <div class="katex-render">
+                    分步计算过程：
+                    \[
+                    \begin{aligned}
+                    1.\ & \text{复制前两列} \\
+                    & \begin{vmatrix}
+                    a & b & c \\
+                    d & e & f \\
+                    g & h & i
+                    \end{vmatrix}
+                    \begin{matrix}
+                    a & b \\
+                    d & e \\
+                    g & h
+                    \end{matrix} \\
+                    2.\ & \text{主对角线乘积之和} \\
+                    & \quad ae{\color{red}i} + bf{\color{red}g} + cd{\color{red}h} \\
+                    3.\ & \text{副对角线乘积之和} \\
+                    & \quad - (ce{\color{blue}g} + bd{\color{blue}i} + af{\color{blue}h}) \\
+                    4.\ & \text{最终结果} \\
+                    & = aei + bfg + cdh - ceg - bdi - afh
+                    \end{aligned}
+                    \]
+                </div>
+            </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="math-box">
+                    <h4><i class="fas fa-list-ol me-2"></i>主要性质</h4>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            性质1：行列式转置值不变 \(\det(A^T) = \det(A)\)
+                        </div>
+                        <div class="list-group-item">
+                            性质2：交换两行（列）变号
+                        </div>
+                        <div class="list-group-item">
+                            性质3：线性性质 \(\det(kA) = k^n\det(A)\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交互演示部分 -->
+    <div class="theory-card mt-4">
+        <h2 class="border-bottom pb-2">行列式计算演示</h2>
+        
+        <div class="row g-4 mt-3">
+            <!-- 矩阵输入区 -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-table me-2"></i>矩阵输入
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <div class="matrix-container" id="matrix2x2">
+                                <div class="matrix-row mb-2">
+                                    <input type="number" class="matrix-input" value="1">
+                                    <input type="number" class="matrix-input" value="0">
+                                </div>
+                                <div class="matrix-row">
+                                    <input type="number" class="matrix-input" value="0">
+                                    <input type="number" class="matrix-input" value="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 计算结果区 -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-calculator me-2"></i>实时计算
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="det-result mb-3" id="detValue">1</div>
+                        <div class="calculation-steps" id="calculationSteps">
+                            当前行列式：\(\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="/static/katex/katex.min.js"></script>
+<script src="/static/katex/auto-render.min.js"></script>
+<script>
+    // 初始化KaTeX
+    document.addEventListener('DOMContentLoaded', function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '\\[', right: '\\]', display: true},
+                {left: '\\(', right: '\\)', display: false}
+            ]
+        });
+    });
+
+    // 矩阵计算逻辑
+    document.querySelectorAll('.matrix-input').forEach(input => {
+        input.addEventListener('input', updateDeterminant);
+    });
+
+    function updateDeterminant() {
+        const inputs = Array.from(document.querySelectorAll('.matrix-input'));
+        const matrix = inputs.map(input => parseFloat(input.value) || 0);
+        
+        // 计算2x2行列式
+        const [a, b, c, d] = matrix;
+        const det = (a * d) - (b * c);
+        
+        // 更新显示
+        document.getElementById('detValue').textContent = det;
+        
+        // 生成LaTeX公式
+        const latex = `
+            \\begin{vmatrix}
+            ${a} & ${b} \\\\
+            ${c} & ${d}
+            \\end{vmatrix} 
+            = (${a} \\times ${d}) - (${b} \\times ${c}) 
+            = ${det}
+        `;
+        
+        // 渲染公式
+        katex.render(latex, document.getElementById('calculationSteps'), {
+            throwOnError: false,
+            displayMode: true
+        });
+    }
+
+    // 初始计算
+    updateDeterminant();
+</script>
+{% endblock %}

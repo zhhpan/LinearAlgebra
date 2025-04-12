@@ -1,0 +1,347 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}二次型解析与可视化{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/static/katex/katex.min.css" rel="stylesheet">
+<style>
+    /* 保持原有样式不变 */
+    .theory-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 20px 0;
+        padding: 30px;
+        transition: transform 0.3s ease;
+    }
+    .theory-card:hover {
+        transform: translateY(-5px);
+    }
+    .concept-header {
+        color: #2c3e50;
+        border-left: 4px solid #3498db;
+        padding-left: 15px;
+        margin: 25px 0;
+    }
+    .quadratic-slider .form-range::-webkit-slider-thumb {
+        background: #4CAF50;
+    }
+    #plot {
+        height: 600px;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .matrix-display {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+    .param-label {
+        width: 40px;
+        font-weight: 500;
+        color: #2c3e50;
+    }
+    .katex-render {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <a href="/" class="btn btn-outline-secondary mb-4">
+        <i class="fas fa-arrow-left me-2"></i>返回主页面
+    </a>
+
+    <!-- 理论知识部分 -->
+    <div class="theory-card">
+        <h2 class="concept-header">二次型核心知识</h2>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="math-box">
+                    <h4><i class="fas fa-cube me-2"></i>基本定义</h4>
+                    <div class="katex-render">
+                        二次型的一般矩阵形式：
+                        \[
+                        f(\mathbf{x}) = \mathbf{x}^T A \mathbf{x} =
+                        \begin{pmatrix}
+                            x & y
+                        \end{pmatrix}
+                        \begin{pmatrix}
+                            a & b/2 \\
+                            b/2 & c
+                        \end{pmatrix}
+                        \begin{pmatrix}
+                            x \\
+                            y
+                        \end{pmatrix}
+                        \]
+                    </div>
+                </div>
+
+                <div class="math-box mt-4">
+                    <h4><i class="fas fa-project-diagram me-2"></i>分类标准</h4>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <strong>椭圆型：</strong>
+                            \(\Delta = b^2 - 4ac < 0\)
+                        </div>
+                        <div class="list-group-item">
+                            <strong>抛物型：</strong>
+                            \(\Delta = 0\)
+                        </div>
+                        <div class="list-group-item">
+                            <strong>双曲型：</strong>
+                            \(\Delta > 0\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="math-box">
+                    <h4><i class="fas fa-shapes me-2"></i>几何意义</h4>
+                    <div class="katex-render">
+                        <p>二次曲线的一般方程：
+                            \[ ax^2 + bxy + cy^2 + dx + ey + f = 0 \]
+                        </p>
+                        <p>对应几何图形由判别式 \(\Delta\) 决定：
+                            \[ \Delta = b^2 - 4ac \]
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 交互演示部分 -->
+    <div class="theory-card mt-4">
+        <h2 class="concept-header">实时交互演示</h2>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <!-- 参数调节面板 -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-sliders me-2"></i>参数调节
+                    </div>
+                    <div class="card-body quadratic-slider">
+                        <!-- 完整滑块控件 -->
+                        <div class="mb-3">
+                            <label class="form-label param-label">a</label>
+                            <input type="range" class="form-range" id="a" min="-5" max="5" step="0.1" value="1">
+                            <span class="badge bg-primary" id="aVal">1</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label param-label">b</label>
+                            <input type="range" class="form-range" id="b" min="-5" max="5" step="0.1" value="0">
+                            <span class="badge bg-primary" id="bVal">0</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label param-label">c</label>
+                            <input type="range" class="form-range" id="c" min="-5" max="5" step="0.1" value="1">
+                            <span class="badge bg-primary" id="cVal">1</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label param-label">d</label>
+                            <input type="range" class="form-range" id="d" min="-10" max="10" step="0.1" value="0">
+                            <span class="badge bg-primary" id="dVal">0</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label param-label">e</label>
+                            <input type="range" class="form-range" id="e" min="-10" max="10" step="0.1" value="0">
+                            <span class="badge bg-primary" id="eVal">0</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label param-label">f</label>
+                            <input type="range" class="form-range" id="f" min="-10" max="10" step="0.1" value="0">
+                            <span class="badge bg-primary" id="fVal">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 信息显示面板 -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-header bg-info text-white">
+                        <i class="fas fa-chart-line me-2"></i>实时信息
+                    </div>
+                    <div class="card-body">
+                        <div id="curveInfo" class="katex-render"></div>
+                        <div class="matrix-display" id="matrixDisplay"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 可视化区域 -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-chart-area me-2"></i>动态可视化
+                    </div>
+                    <div class="card-body p-3">
+                        <div id="plot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.plot.ly/plotly-3.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+<script src="/static/katex/katex.min.js"></script>
+<script src="/static/katex/auto-render.min.js"></script>
+<script>
+    // KaTeX自动渲染配置
+    document.addEventListener('DOMContentLoaded', function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '\\[', right: '\\]', display: true},
+                {left: '\\(', right: '\\)', display: false}
+            ]
+        });
+    });
+
+    // 参数和初始化
+    const sliders = ['a', 'b', 'c', 'd', 'e', 'f'];
+    let currentParams = { a:1, b:0, c:1, d:0, e:0, f:0 };
+
+    // 事件监听初始化
+    sliders.forEach(id => {
+        const slider = document.getElementById(id);
+        slider.addEventListener('input', update);
+        document.getElementById(`${id}Val`).textContent = slider.value;
+    });
+
+    // 主更新函数
+    function update() {
+        try {
+            // 更新参数值
+            sliders.forEach(id => {
+                currentParams[id] = parseFloat(document.getElementById(id).value);
+                document.getElementById(`${id}Val`).textContent = currentParams[id].toFixed(1);
+            });
+
+            // 更新各组件
+            updatePlot();
+            updateInfo();
+            updateMatrix();
+        } catch (error) {
+            console.error('更新出错:', error);
+        }
+    }
+
+    // 绘图函数
+    function updatePlot() {
+        const { a, b, c, d, e, f } = currentParams;
+        const x = numeric.linspace(-10, 10, 100);
+        const y = numeric.linspace(-10, 10, 100);
+        const z = [];
+
+        // 生成Z数据
+        for (let i = 0; i < y.length; i++) {
+            const row = [];
+            for (let j = 0; j < x.length; j++) {
+                const xi = x[j], yi = y[i];
+                row.push(a*xi**2 + b*xi*yi + c*yi**2 + d*xi + e*yi + f);
+            }
+            z.push(row);
+        }
+
+        // 配置Plotly
+        const data = [{
+            x: x,
+            y: y,
+            z: z,
+            type: 'contour',
+            contours: {
+                start: 0,
+                end: 0,
+                size: 0.1,
+                coloring: 'lines'
+            },
+            line: { width: 2 },
+            showscale: false
+        }];
+
+        const layout = {
+            margin: { t: 40, b: 40, l: 60, r: 60 },
+            xaxis: { range: [-10, 10] },
+            yaxis: {
+                scaleanchor: "x",
+                range: [-10, 10]
+            }
+        };
+
+        Plotly.react('plot', data, layout);
+    }
+
+    // 信息更新函数
+    function updateInfo() {
+        const delta = currentParams.b ** 2 - 4 * currentParams.a * currentParams.c;
+        let type = "标准二次曲线";
+
+        if (delta < 0) type = "椭圆";
+        else if (delta === 0) type = "抛物线";
+        else type = "双曲线";
+
+        try {
+            katex.render(
+                `\\begin{aligned}
+                    &\\Delta = ${delta.toFixed(2)} \\\\
+                    &\\text{类型}: ${type} \\\\
+                    &${formatEquation(currentParams)}
+                \\end{aligned}`,
+                document.getElementById('curveInfo'),
+                { throwOnError: false, displayMode: true }
+            );
+        } catch (error) {
+            console.error('公式渲染错误:', error);
+        }
+    }
+
+    // 矩阵更新函数
+    function updateMatrix() {
+        try {
+            katex.render(
+                `A = \\begin{bmatrix}
+                    ${currentParams.a.toFixed(1)} & ${(currentParams.b/2).toFixed(1)} \\\\
+                    ${(currentParams.b/2).toFixed(1)} & ${currentParams.c.toFixed(1)}
+                \\end{bmatrix}`,
+                document.getElementById('matrixDisplay'),
+                { throwOnError: false }
+            );
+        } catch (error) {
+            console.error('矩阵渲染错误:', error);
+        }
+    }
+
+    // 方程格式化函数
+    function formatEquation(params) {
+        const terms = [];
+        if (params.a !== 0) terms.push(`${params.a.toFixed(1)}x^2`);
+        if (params.b !== 0) terms.push(`${params.b.toFixed(1)}xy`);
+        if (params.c !== 0) terms.push(`${params.c.toFixed(1)}y^2`);
+        if (params.d !== 0) terms.push(`${params.d.toFixed(1)}x`);
+        if (params.e !== 0) terms.push(`${params.e.toFixed(1)}y`);
+        if (params.f !== 0) terms.push(params.f.toFixed(1));
+
+        let equation = terms.join(' + ').replace(/\+\s-/g, ' - ');
+        if (!equation) equation = "0";
+        equation += " = 0";
+
+        return equation.replace(/([+\-])/g, " $1 ");
+    }
+
+    // 初始渲染
+    update();
+</script>
+{% endblock %}

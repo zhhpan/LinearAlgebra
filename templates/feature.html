@@ -1,0 +1,497 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}线性变换与特征向量详解{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="static/katex/katex.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script defer src="static/katex/katex.min.js"></script>
+<script defer src="static/katex/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '\\[', right: '\\]', display: true},
+                {left: '\\(', right: '\\)', display: false}
+            ]
+        });">
+</script>
+<style>
+    .theory-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 20px 0;
+        padding: 30px;
+        transition: transform 0.3s ease;
+    }
+    .theory-card:hover {
+        transform: translateY(-5px);
+    }
+    .concept-header {
+        color: #2c3e50;
+        border-left: 4px solid #3498db;
+        padding-left: 15px;
+        margin: 25px 0;
+    }
+    .math-box {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        position: relative;
+    }
+    .matrix-example {
+        border-collapse: collapse;
+        margin: 15px auto;
+    }
+    .matrix-example td {
+        padding: 12px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+    }
+    /* Interactive demo styles */
+    canvas {
+        border: 1px solid #000;
+        background: #fff;
+        display: block;
+        margin: 0 auto;
+    }
+    .matrix-input {
+        position: absolute;
+        left: 30px;
+        top: 30px;
+        background: rgba(255,255,255,0.9);
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        font-size: 14px;
+    }
+    .matrix-input input {
+        width: 50px;
+        margin: 2px;
+        padding: 3px;
+    }
+
+    .matrix-grid {
+        display: inline-grid;
+        gap: 0.5rem;
+    }
+
+    .matrix-bracket {
+        color: #6c757d;
+        font-weight: bold;
+        align-self: center;
+    }
+    .matrix-input-group {
+        position: relative;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #dee2e6;
+    }
+
+    .matrix-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+
+    .matrix-grid {
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .matrix-row {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .matrix-cell {
+        width: 70px;
+        height: 45px;
+        text-align: center;
+        font-weight: 500;
+        border: 2px solid #ced4da;
+        transition: all 0.3s ease;
+    }
+
+    .matrix-cell:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+    }
+
+    .matrix-bracket {
+        font-size: 2.5rem;
+        color: #6c757d;
+        line-height: 1;
+        align-self: center;
+        font-family: "Times New Roman", serif;
+    }
+
+    .left-bracket { margin-right: 0.8rem; }
+    .right-bracket { margin-left: 0.8rem; }
+
+    .matrix-label {
+        position: absolute;
+        bottom: -1.2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        padding: 0 0.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .animation-wrapper {
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1rem;
+        background: white;
+    }
+
+    .animation-gif {
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="container mt-3">
+        <a href="/" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>返回主页面
+        </a>
+    </div>
+    <!-- 理论部分 -->
+    <div class="theory-card">
+        <h2 class="concept-header">1. 线性变换基础</h2>
+
+        <div class="math-box">
+            <h4>定义 1.1 (线性变换)</h4>
+            <div class="katex-render">
+                对于向量空间 \(V\) 和 \(W\)，变换 \(T:V\to W\) 为线性变换，当且仅当：
+                \[
+                \begin{cases}
+                T(u+v)=T(u)+T(v),\\
+                T(c\,v)=c\,T(v)
+                \end{cases}
+                \quad\forall u,v\in V,\;c\in\mathbb{R}.
+                \]
+            </div>
+        </div>
+
+        <div class="math-box">
+            <h4>性质</h4>
+            <ul>
+                <li><strong>核 (Kernel)</strong>: \(\ker T=\{v\in V\mid T(v)=0\}\).</li>
+                <li><strong>像 (Image)</strong>: \(\mathrm{Im}\,T=\{T(v)\mid v\in V\}\).</li>
+                <li><strong>秩-零化度定理</strong>: \(\dim V=\dim\ker T+\dim\mathrm{Im}\,T\).</li>
+                <li><strong>复合与可逆</strong>: 若 \(T:V\to W\)、\(S:W\to U\) 都线性，则 \(S\circ T\) 也是线性；当 \(\det A\neq0\) 时，对应变换可逆。</li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="math-box">
+                    <h4>矩阵表示 (二维示例)</h4>
+                    <div class="katex-render">
+                        任意二维线性变换可表示为：
+                        \[
+                        T(v)=A\,v=\begin{pmatrix}a&b\\c&d\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}.
+                        \]
+                    </div>
+                    <table class="matrix-example">
+                        <tr><td>旋转 \(\theta\)</td><td>\(\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}\)</td></tr>
+                        <tr><td>缩放 \(k\)</td><td>\(\begin{pmatrix}k&0\\0&k\end{pmatrix}\)</td></tr>
+                        <tr><td>剪切 (Shear)</td><td>\(\begin{pmatrix}1&k\\0&1\end{pmatrix}\) 或 \(\begin{pmatrix}1&0\\k&1\end{pmatrix}\)</td></tr>
+                        <tr><td>反射 (Reflection)</td><td>关于 x 轴: \(\begin{pmatrix}1&0\\0&-1\end{pmatrix}\)，关于直线 y=x: \(\begin{pmatrix}0&1\\1&0\end{pmatrix}\)</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="math-box">
+                    <h4>几何解释</h4>
+                    <p>矩阵 \(A=\begin{pmatrix}a&b\\c&d\end{pmatrix}\) 作用在标准基 \(e_1=(1,0)^T\)、\(e_2=(0,1)^T\) 上，分别变为：</p>
+                    <div class="katex-render">
+                        \[e_1\to(a,c)^T,\quad e_2\to(b,d)^T.\]
+                    </div>
+                    <p>任意向量 \(v=(x,y)^T\) 则在新基下被拉伸、旋转或扭曲。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 特征系统理论 -->
+    <div class="theory-card">
+        <h2 class="concept-header">2. 特征系统分析</h2>
+
+        <div class="math-box">
+            <h4>定义 2.1 (特征值 & 特征向量)</h4>
+            <div class="katex-render">
+                对方阵 \(A\)，若存在非零向量 \(v\) 和标量 \(\lambda\) 满足：
+                \[A\,v=\lambda v\]
+                则称 \(\lambda\) 为特征值 (Eigenvalue)，\(v\) 为对应特征向量 (Eigenvector)。
+            </div>
+        </div>
+
+        <!-- 动态演示 -->
+        <div class="math-box">
+            <h4>动态演示：特征向量与线性变换</h4>
+            <div style="position:relative; height:620px;">
+                <div class="matrix-input">
+                    矩阵 A = <br>
+                    <input type="number" id="a" value="1" step="0.01">
+                    <input type="number" id="b" value="1" step="0.01"><br>
+                    <input type="number" id="c" value="1" step="0.01">
+                    <input type="number" id="d" value="2" step="0.01">
+                </div>
+                <canvas id="canvas" width="600" height="600"></canvas>
+            </div>
+        </div>
+
+        <div class="math-box">
+            <h4>特征方程</h4>
+            <div class="katex-render">
+                求 \(\lambda\) 需解：
+                \[\det(A-\lambda I)=0.\]
+                二阶展开：
+                \[\lambda^2-(a+d)\lambda+(ad-bc)=0.\]
+            </div>
+            <p>根为 \(\lambda_{1,2}=\frac{(a+d)\pm\sqrt{(a+d)^2-4(ad-bc)}}{2}.\)</p>
+        </div>
+
+        <div class="math-box">
+            <h4>几何 & 代数重数</h4>
+            <ul>
+                <li>代数重数 (Algebraic Multiplicity): 特征值在特征多项式中的重数。</li>
+                <li>几何重数 (Geometric Multiplicity): 解空间 \((A-\lambda I)v=0\) 的维数。</li>
+                <li>若对所有 \(\lambda\) ，几何重数 = 代数重数，则矩阵可对角化。</li>
+            </ul>
+        </div>
+
+        <div class="math-box">
+            <h4>对角化</h4>
+            <div class="katex-render">
+                若 \(A=PDP^{-1}\)，其中 \(D\) 对角矩阵、\(P\) 列向量为特征向量，则称 \(A\) 可对角化：
+                \[D=\begin{pmatrix}\lambda_1&0\\0&\lambda_2\end{pmatrix},\quad P=[v_1\;v_2].\]
+            </div>
+        </div>
+
+        <div class="math-box">
+            <h4>谱定理 (实对称矩阵)</h4>
+            <div class="katex-render">
+                对于实对称矩阵 \(A=A^T\)，存在正交矩阵 \(Q\) 使其对角化：
+                \[A=QDQ^T,\quad Q^{-1}=Q^T.\]
+            </div>
+        </div>
+    </div>
+
+    <!-- 示例与应用 -->
+    <div class="theory-card">
+        <h2 class="concept-header">3. 示例与应用</h2>
+
+        <div class="math-box">
+            <h4>示例：求矩阵特征</h4>
+            <div class="katex-render">
+                令 \(A=\begin{pmatrix}3&1\\0&2\end{pmatrix}\)，则特征方程：
+                \[
+                \det\begin{pmatrix}3-\lambda&1\\0&2-\lambda\end{pmatrix}
+                =(3-\lambda)(2-\lambda)=0.
+                \]
+                得 \(\lambda_1=3,\lambda_2=2\)。
+                对应特征向量：
+                \[
+                (A-3I)v=0\to v=(1,0)^T,\quad(A-2I)v=0\to v=(1,-1)^T.
+                \]
+            </div>
+        </div>
+
+        <div class="math-box">
+            <h4>应用</h4>
+            <ul>
+                <li><strong>主成分分析 (PCA)</strong>: 利用对称协方差矩阵的特征分解，找到数据的主方向。</li>
+                <li><strong>微分方程</strong>: 对角化后简化线性常微分方程组的求解。</li>
+                <li><strong>图像处理</strong>: 通过奇异值分解 (SVD) 实现降噪和压缩。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="theory-card">
+        <h2 class="concept-header">线性变换动画演示</h2>
+
+        <form method="post">
+            <!-- 矩阵输入容器 -->
+            <div class="matrix-input-group mb-4">
+                <div class="matrix-wrapper">
+                    <span class="matrix-bracket left-bracket">[</span>
+                    <div class="matrix-grid">
+                        <div class="matrix-row">
+                            <input type="number" name="a" step="0.01"
+                                   class="form-control matrix-cell"
+                                   value="{{ request.form.get('a', '1') }}" required>
+                            <input type="number" name="b" step="0.01"
+                                   class="form-control matrix-cell"
+                                   value="{{ request.form.get('b', '1') }}" required>
+                        </div>
+                        <div class="matrix-row">
+                            <input type="number" name="c" step="0.01"
+                                   class="form-control matrix-cell"
+                                   value="{{ request.form.get('c', '1') }}" required>
+                            <input type="number" name="d" step="0.01"
+                                   class="form-control matrix-cell"
+                                   value="{{ request.form.get('d', '2') }}" required>
+                        </div>
+                    </div>
+                    <span class="matrix-bracket right-bracket">]</span>
+                </div>
+                <div class="matrix-label">矩阵 A</div>
+            </div>
+
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-play-circle"></i> 生成动画
+                </button>
+            </div>
+        </form>
+
+        {% if gif_url %}
+            <div class="animation-result mt-4">
+                <h4>变换效果可视化：</h4>
+                <div class="animation-wrapper">
+                    <img src="{{ gif_url }}" alt="线性变换动画" class="animation-gif">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let P = {x:1, y:0};
+let isDragging = false;
+const scale = 50;
+
+const toCanvas = (x,y) => ({
+  x: canvas.width/2 + x*scale,
+  y: canvas.height/2 - y*scale
+});
+const toMath = (x,y) => ({
+  x: (x - canvas.width/2)/scale,
+  y: (canvas.height/2 - y)/scale
+});
+
+function applyMatrix(P,a,b,c,d){ return { x:a*P.x + b*P.y, y:c*P.x + d*P.y }; }
+function calculateEigen(a,b,c,d){
+  const trace = a+d, det = a*d - b*c;
+  const disc = trace*trace - 4*det;
+  if(disc<0) return null;
+  const sqrtD = Math.sqrt(disc);
+  const l1 = (trace+sqrtD)/2, l2 = (trace-sqrtD)/2;
+  const u1 = {x:b, y:l1 - a}, u2 = {x:b, y:l2 - a};
+  const norm = v=>{const len=Math.hypot(v.x,v.y);return len?{x:v.x/len,y:v.y/len}:v;};
+  return { values:[l1,l2], vectors:[norm(u1),norm(u2)] };
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const a=+document.getElementById('a').value;
+  const b=+document.getElementById('b').value;
+  const c=+document.getElementById('c').value;
+  const d=+document.getElementById('d').value;
+  const eigen = calculateEigen(a,b,c,d);
+  drawGrid(); drawUnitCircle();
+  if(eigen) eigen.vectors.forEach((v,i)=> drawEigenLine(v, i? '#9b59b6':'#2ecc71'));
+  const TP = applyMatrix(P,a,b,c,d);
+  drawVector(P, '#3498db', 'P');
+  drawVector(TP, '#e74c3c', 'TP');
+  drawInfoPanel(eigen, 400, 30);
+}
+
+function drawGrid(){
+  // 网格
+  ctx.strokeStyle='#ecf0f1'; ctx.lineWidth=0.5;
+  ctx.beginPath();
+  for(let i=-6;i<=6;i++){
+    ctx.moveTo(toCanvas(i,-6).x, toCanvas(i,-6).y);
+    ctx.lineTo(toCanvas(i,6).x, toCanvas(i,6).y);
+    ctx.moveTo(toCanvas(-6,i).x, toCanvas(-6,i).y);
+    ctx.lineTo(toCanvas(6,i).x, toCanvas(6,i).y);
+  }
+  ctx.stroke();
+  // 坐标轴
+  ctx.strokeStyle='#2c3e50'; ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(canvas.width/2,0); ctx.lineTo(canvas.width/2,canvas.height);
+  ctx.moveTo(0,canvas.height/2); ctx.lineTo(canvas.width,canvas.height/2);
+  ctx.stroke();
+  // 刻度与标签
+  ctx.fillStyle='#2c3e50'; ctx.font='12px Arial';
+  // x 轴刻度
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  for(let i=-6;i<=6;i++){
+    const p = toCanvas(i,0);
+    ctx.beginPath(); ctx.moveTo(p.x,p.y-5); ctx.lineTo(p.x,p.y+5); ctx.stroke();
+    if(i!==0) ctx.fillText(i.toString(), p.x, p.y+8);
+  }
+  // y 轴刻度
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  for(let i=-6;i<=6;i++){
+    const p = toCanvas(0,i);
+    ctx.beginPath(); ctx.moveTo(p.x-5,p.y); ctx.lineTo(p.x+5,p.y); ctx.stroke();
+    if(i!==0) ctx.fillText(i.toString(), p.x-8, p.y);
+  }
+}
+
+function drawUnitCircle(){
+  ctx.strokeStyle='#ddd'; ctx.setLineDash([5,3]);
+  ctx.beginPath(); ctx.arc(canvas.width/2,canvas.height/2,scale,0,2*Math.PI); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawEigenLine(v,color){
+  const r=20;
+  const p1=toCanvas(-v.x*r,-v.y*r), p2=toCanvas(v.x*r,v.y*r);
+  ctx.strokeStyle=color; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+}
+
+function drawVector(vec,color,label){
+  const start=toCanvas(0,0), end=toCanvas(vec.x,vec.y);
+  // 向量线
+  ctx.strokeStyle=color; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(start.x,start.y); ctx.lineTo(end.x,end.y); ctx.stroke();
+  // 箭头
+  const ang=Math.atan2(end.y-start.y,end.x-start.x);
+  ctx.fillStyle=color; ctx.save(); ctx.translate(end.x,end.y); ctx.rotate(ang);
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-12,-6); ctx.lineTo(-12,6); ctx.closePath(); ctx.fill(); ctx.restore();
+  // 标签
+  ctx.fillStyle=color; ctx.font='14px Arial'; ctx.textAlign='left'; ctx.textBaseline='bottom';
+  ctx.fillText(label, end.x+8, end.y-8);
+  // 坐标
+  const coord=`(${vec.x.toFixed(1)}, ${vec.y.toFixed(1)})`;
+  ctx.font='12px Arial'; ctx.textBaseline='top';
+  ctx.fillText(coord, end.x+8, end.y+4);
+}
+
+function drawInfoPanel(e,x,y){
+  ctx.fillStyle='#2c3e50'; ctx.font='14px Arial'; ctx.textAlign='left'; ctx.textBaseline='top';
+  if(!e){ ctx.fillText('无实数特征值', x, y); return; }
+  ctx.fillText(`λ₁ = ${e.values[0].toFixed(2)}`, x, y);
+  ctx.fillText(`λ₂ = ${e.values[1].toFixed(2)}`, x, y+20);
+  ctx.fillText(`u₁ = (${e.vectors[0].x.toFixed(2)}, ${e.vectors[0].y.toFixed(2)})`, x, y+50);
+  ctx.fillText(`u₂ = (${e.vectors[1].x.toFixed(2)}, ${e.vectors[1].y.toFixed(2)})`, x, y+70);
+}
+
+canvas.addEventListener('mousedown',e=>{const r=canvas.getBoundingClientRect();const m=toMath(e.clientX-r.left,e.clientY-r.top);if(Math.hypot(m.x-P.x,m.y-P.y)<0.2) isDragging=true;});
+canvas.addEventListener('mousemove',e=>{if(!isDragging) return;const r=canvas.getBoundingClientRect();const m=toMath(e.clientX-r.left,e.clientY-r.top);const len=Math.hypot(m.x,m.y);P.x=len?m.x/len:0;P.y=len?m.y/len:0;draw();});
+canvas.addEventListener('mouseup',()=>isDragging=false);
+document.querySelectorAll('input').forEach(i=>i.addEventListener('input',draw));
+draw();
+</script>
+{% endblock %}

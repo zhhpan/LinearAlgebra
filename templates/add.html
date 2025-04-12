@@ -1,0 +1,497 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}向量运算教学系统{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="static/katex/katex.min.css" rel="stylesheet">
+<script defer src="static/katex/katex.min.js"></script>
+<script defer src="static/katex/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '\\[', right: '\\]', display: true},
+                {left: '\\(', right: '\\)', display: false}
+            ]
+        });">
+</script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --theory-bg: #f9fbfd;
+    --demo-bg: #ffffff;
+    --primary-blue: #2b6cb0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f1f3f5;
+}
+
+a.back-home {
+    display: inline-block;
+    margin: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    text-decoration: none;
+}
+a.back-home i {
+    margin-right: 0.5rem;
+}
+a.back-home:hover {
+    color: #1c4f91;
+    text-decoration: underline;
+}
+
+.theory-section, .demo-section {
+    padding: 3rem 0;
+}
+
+.theory-section {
+    background-color: var(--theory-bg);
+    border-bottom: 1px solid #ddd;
+}
+
+.math-title {
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.math-title::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary-blue);
+}
+
+.math-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+    padding: 2rem;
+    {#border-left: 5px solid var(--primary-blue);#}
+}
+
+.formula-box {
+    background: #fff;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.media-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.media-container iframe, .media-container img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+    object-fit: contain;
+}
+
+.control-panel {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.btn-primary {
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #1c4f91;
+    transform: scale(1.03);
+}
+
+.matrix-container {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    margin: 0.5rem 0;
+}
+
+.matrix-bracket {
+    font-family: KaTeX_Main;
+    font-size: 2.5em;
+    color: #333;
+    padding: 0 0.3em;
+    align-self: center;
+}
+
+.matrix-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.matrix-inputs input {
+    width: 70px;
+    height: 38px;
+    text-align: center;
+    border: 2px solid #2b6cb0;
+    border-radius: 6px;
+    font-size: 1.05em;
+    transition: all 0.3s ease;
+    padding: 4px 6px;
+}
+
+.matrix-inputs input:focus {
+    border-color: #1c4f91;
+    box-shadow: 0 0 8px rgba(43,108,176,0.3);
+    outline: none;
+}
+
+@media (max-width: 576px) {
+    .media-container {
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+}
+@media (max-width: 768px) {
+    .matrix-inputs input {
+        width: 55px;
+        height: 34px;
+    }
+    .matrix-bracket {
+        font-size: 2em;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="container mt-3">
+        <a href="/" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>返回主页面
+        </a>
+    </div>
+    <!-- 理论区 -->
+    <section class="theory-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <div class="math-card">
+                        <h2 class="math-title">向量运算基础</h2>
+
+                        <h4 class="mt-4">一、向量加法</h4>
+                        <div class="formula-box">
+                            <p>对于两个向量：</p>
+                            <p>\[
+                                \vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{pmatrix}, \quad
+                                \vec{b} = \begin{pmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{pmatrix}
+                            \]</p>
+                            <p>则：</p>
+                            <p>\[
+                                \vec{a} + \vec{b} = \begin{pmatrix} a_1 + b_1 \\ a_2 + b_2 \\ \vdots \\ a_n + b_n \end{pmatrix}
+                            \]</p>
+                        </div>
+
+                        <h4 class="mt-4">二、向量减法</h4>
+                        <div class="formula-box">
+                            <p>\[
+                                \vec{a} - \vec{b} = \begin{pmatrix} a_1 - b_1 \\ a_2 - b_2 \\ \vdots \\ a_n - b_n \end{pmatrix}
+                            \]</p>
+                            <p>可理解为加上\(-\vec{b}\)，方向从 \(\vec{b}\) 指向 \(\vec{a}\)。</p>
+                        </div>
+
+                        <h4 class="mt-4">三、几何解释</h4>
+                        <div class="formula-box">
+                            <p>平行四边形法则与三角形法则可帮助理解加减法的空间意义。</p>
+                        </div>
+
+                        <h4 class="mt-4">四、数乘</h4>
+                        <div class="formula-box">
+                            <p>向量乘以标量 \(k\)：</p>
+                            <p>\[
+                                k \vec{a} = \begin{pmatrix} ka_1 \\ ka_2 \\ \vdots \\ ka_n \end{pmatrix}
+                            \]</p>
+                            <p>改变向量长度，不改变方向（或取反）。</p>
+                        </div>
+
+                        <h4 class="mt-4">五、单位向量</h4>
+                        <div class="formula-box">
+                            <p>将非零向量单位化：</p>
+                            <p>\[
+                                \hat{a} = \frac{\vec{a}}{\|\vec{a}\|} = \frac{1}{\sqrt{a_1^2 + \cdots + a_n^2}} \vec{a}
+                            \]</p>
+                            <p>单位向量的模恒为 1。</p>
+                        </div>
+
+                        <h4 class="mt-4">六、叉乘</h4>
+                        <div class="formula-box">
+                            <p>定义如下：</p>
+                            <p>\[
+                                \vec{a} \times \vec{b} = \begin{pmatrix}
+                                    a_2b_3 - a_3b_2 \\
+                                    a_3b_1 - a_1b_3 \\
+                                    a_1b_2 - a_2b_1
+                                \end{pmatrix}
+                            \]</p>
+                            <p>结果向量垂直于 \(\vec{a}, \vec{b}\)，方向由右手法则确定。</p>
+                        </div>
+
+                        <h4 class="mt-4">七、向量内积（点积）</h4>
+                        <div class="formula-box">
+                            <p>对于两个\( n \)维向量：</p>
+                            <p>\[
+                                \vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{pmatrix}, \quad
+                                \vec{b} = \begin{pmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{pmatrix}
+                            \]</p>
+                            <p>其内积（点积）定义为：</p>
+                            <p>\[
+                                \vec{a} \cdot \vec{b} = a_1 b_1 + a_2 b_2 + \cdots + a_n b_n = \sum_{i=1}^{n} a_i b_i
+                            \]</p>
+                            <p>几何意义上，内积也可以表示为：</p>
+                            <p>\[
+                                \vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos{\theta}
+                            \]</p>
+                            <p>其中 \(\theta\) 是两个向量的夹角。</p>
+                        </div>
+
+                        <h4 class="mt-4">八、向量的正交性</h4>
+                        <div class="formula-box">
+                            <p>两个向量如果满足内积为零：</p>
+                            <p>\[
+                                \vec{a} \cdot \vec{b} = 0
+                            \]</p>
+                            <p>则称 \(\vec{a}\) 与 \(\vec{b}\) 正交，几何上表示它们互相垂直。</p>
+                            <p>特别地，若：</p>
+                            <p>\[
+                                \vec{a} \neq \vec{0}, \quad \vec{b} \neq \vec{0}, \quad \text{且} \quad \vec{a} \cdot \vec{b} = 0
+                            \]</p>
+                            <p>则说明两个向量在空间中的夹角为90度。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 演示区 -->
+    <section class="demo-section">
+        <!-- 控制面板 -->
+    <div class="math-card">
+        <form method="POST">
+            <div class="row g-3">
+                <!-- 向量输入 -->
+                <div class="col-12">
+                    <div class="d-flex justify-content-center gap-4">
+                        <div class="matrix-container">
+                            <span class="matrix-bracket">[</span>
+                            <div class="matrix-inputs">
+                                <label class="form-label fw-bold">向量 v1</label>
+                                {% for i in range(vector_size) %}
+                                    <input type="number" step="any"
+                                           class="form-control"
+                                           name="v1_{{ i }}"
+                                           value="{{ v1[i] if v1 else '' }}" required>
+                                {% endfor %}
+                            </div>
+                            <span class="matrix-bracket">]</span>
+                        </div>
+
+                        <div class="matrix-container">
+                            <span class="matrix-bracket">[</span>
+                            <div class="matrix-inputs">
+                                <label class="form-label fw-bold">向量 v2</label>
+                                {% for i in range(vector_size) %}
+                                    <input type="number" step="any"
+                                           class="form-control"
+                                           name="v2_{{ i }}"
+                                           value="{{ v2[i] if v2 else '' }}" required>
+                                {% endfor %}
+                            </div>
+                            <span class="matrix-bracket">]</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 维度选择 -->
+                <div class="col-md-6">
+                    <label class="form-label">维度</label>
+                    <select class="form-select" name="dimension" id="dimension">
+                        <option value="2d" {% if dimension == '2d' %}selected{% endif %}>二维</option>
+                        <option value="3d" {% if dimension == '3d' %}selected{% endif %}>三维</option>
+                    </select>
+                </div>
+
+                <!-- 运算选择 -->
+                <div class="col-md-6">
+                    <label class="form-label">运算类型</label>
+                    <select class="form-select" name="operation">
+                        <option value="add" {% if operation == 'add' %}selected{% endif %}>加法</option>
+                        <option value="subtract" {% if operation == 'subtract' %}selected{% endif %}>减法</option>
+{#                        <option value="cross" {% if operation == 'cross' %}selected{% endif %}>叉乘</option>#}
+{#                        <option value="orthogonal" {% if operation == 'orthogonal' %}selected{% endif %}>正交判断</option>#}
+                    </select>
+                </div>
+
+
+
+                <!-- 操作按钮 -->
+                <div class="col-12 d-flex gap-3 justify-content-end">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-play me-2"></i>执行运算
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-undo me-2"></i>重置
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 结果展示 -->
+    {% if result is not none or is_orthogonal is not none %}
+    <div class="row mt-4">
+        <!-- 可视化区域 -->
+        <div class="col-lg-6 mb-4">
+            <div class="math-card">
+                <h4 class="mb-3"><i class="fas fa-chart-area me-2"></i>可视化展示</h4>
+                <div class="media-container">
+                    {% if plot_html %}
+                        {{ plot_html|safe }}
+                    {% else %}
+                        <div class="alert alert-info m-3">请先执行运算</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div class="col-lg-6">
+            <div class="math-card">
+                <h4 class="mb-3"><i class="fas fa-calculator me-2"></i>运算结果</h4>
+
+                {% if operation == 'orthogonal' %}
+                <div class="operation-alert {% if is_orthogonal %}bg-success text-white{% else %}bg-warning{% endif %}">
+                    {% if is_orthogonal %}
+                    <i class="fas fa-check-circle me-2"></i>向量正交（点积 ≈ 0）
+                    {% else %}
+                    <i class="fas fa-exclamation-triangle me-2"></i>向量不正交
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="result-card">
+                    <h5>结果向量：</h5>
+                    <div class="matrix-container">
+                        <span class="matrix-bracket">[</span>
+                        <div class="matrix-inputs">
+                            {% if operation != 'orthogonal' %}
+                            <div class="result-formula mb-4">
+                                <div class="math-display">
+                                    {% if operation == 'add' %}
+                                        \[
+                                        \begin{pmatrix} {{ v1[0]|round(2) }} \\ {{ v1[1]|round(2) }}{% if dimension == '3d' %} \\ {{ v1[2]|round(2) }}{% endif %} \end{pmatrix}
+                                        +
+                                        \begin{pmatrix} {{ v2[0]|round(2) }} \\ {{ v2[1]|round(2) }}{% if dimension == '3d' %} \\ {{ v2[2]|round(2) }}{% endif %} \end{pmatrix}
+                                        =
+                                        \begin{pmatrix} {{ result[0]|round(2) }} \\ {{ result[1]|round(2) }}{% if dimension == '3d' %} \\ {{ result[2]|round(2) }}{% endif %} \end{pmatrix}
+                                        \]
+                                    {% elif operation == 'subtract' %}
+                                        \[
+                                        \begin{pmatrix} {{ v1[0]|round(2) }} \\ {{ v1[1]|round(2) }}{% if dimension == '3d' %} \\ {{ v1[2]|round(2) }}{% endif %} \end{pmatrix}
+                                        -
+                                        \begin{pmatrix} {{ v2[0]|round(2) }} \\ {{ v2[1]|round(2) }}{% if dimension == '3d' %} \\ {{ v2[2]|round(2) }}{% endif %} \end{pmatrix}
+                                        =
+                                        \begin{pmatrix} {{ result[0]|round(2) }} \\ {{ result[1]|round(2) }}{% if dimension == '3d' %} \\ {{ result[2]|round(2) }}{% endif %} \end{pmatrix}
+                                        \]
+                                    {% elif operation == 'cross' %}
+                                        \[
+                                        \begin{pmatrix} {{ v1[0]|round(2) }} \\ {{ v1[1]|round(2) }} \\ {{ v1[2]|round(2) }} \end{pmatrix}
+                                        \times
+                                        \begin{pmatrix} {{ v2[0]|round(2) }} \\ {{ v2[1]|round(2) }} \\ {{ v2[2]|round(2) }} \end{pmatrix}
+                                        =
+                                        \begin{pmatrix} {{ result[0]|round(2) }} \\ {{ result[1]|round(2) }} \\ {{ result[2]|round(2) }} \end{pmatrix}
+                                        \]
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="dot-product-formula mb-4">
+                                \[
+                                \vec{a} \cdot \vec{b} = {{ v1[0]|round(2) }} \times {{ v2[0]|round(2) }}
+                                {% for i in range(1, vector_size) %}
+                                    + {{ v1[i]|round(2) }} \times {{ v2[i]|round(2) }}
+                                {% endfor %}
+                                = {{ "%.2f"|format(np.dot(v1, v2)) }}
+                                \]
+                            </div>
+                            {% endif %}
+                        </div>
+                        <span class="matrix-bracket">]</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if gif_url %}
+                <div class="mt-4">
+                    <h5><i class="fas fa-film me-2"></i>动画演示</h5>
+                    <div class="media-container">
+                        <img src="{{ gif_url }}" class="img-fluid" alt="运算动画">
+                    </div>
+                    <div class="d-flex gap-3 mt-3">
+                        <button class="btn btn-outline-primary" onclick="replayGIF()">
+                            <i class="fas fa-redo me-1"></i>重新播放
+                        </button>
+                        <a href="{{ gif_url }}" download class="btn btn-outline-success">
+                            <i class="fas fa-download me-1"></i>下载动画
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+// 动态维度处理
+document.getElementById('dimension').addEventListener('change', function() {
+    const dimension = this.value;
+    const vectorSize = dimension === '2d' ? 2 : 3;
+
+    // 更新所有矩阵输入框数量
+    document.querySelectorAll('.matrix-inputs').forEach(container => {
+        container.innerHTML = Array.from({length: vectorSize}, (_, i) =>
+            `<input type="text" class="form-control matrix-element"
+                    name="${container.closest('.matrix-container').contains(document.querySelector('[name^="v1_"]')) ? 'v1' : 'v2'}_${i}"
+                    required>`
+        ).join('');
+    });
+});
+function replayGIF() {
+    const img = document.querySelector('.media-container img');
+    if (img) {
+        const src = img.src;
+        img.src = '';  // 清空触发刷新
+        img.src = src; // 重新加载播放
+    }
+}
+</script>
+{% endblock %}

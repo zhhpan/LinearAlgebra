@@ -1,0 +1,388 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}极大线性无关组教学演示{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+    }
+
+    .teaching-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 15px;
+    }
+
+    .theory-card {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        margin: 1.5rem 0;
+        padding: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .theory-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .matrix-editor {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .vector-input-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0.8rem 0;
+    }
+
+    .vector-input {
+        width: 70px;
+        padding: 0.6rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        text-align: center;
+        transition: border-color 0.3s;
+    }
+
+    .vector-input:focus {
+        border-color: var(--secondary-color);
+        outline: none;
+    }
+
+    .step-animation {
+        animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    .operation-log {
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 1rem;
+    }
+
+    .matrix-step {
+        background: #f8f9fa;
+        border-left: 4px solid var(--secondary-color);
+        margin: 1rem 0;
+        padding: 1.2rem;
+        border-radius: 6px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="teaching-container">
+    <!-- 简化后的导航栏 -->
+    <nav class="d-flex justify-content-between align-items-center mb-5">
+        <a href="/" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>返回主界面
+        </a>
+    </nav>
+
+    <!-- 理论展示区 -->
+    <div class="theory-card">
+        <h3 class="mb-4"><i class="fas fa-shapes me-2"></i>核心概念</h3>
+        <div class="concept-item bg-light p-3 rounded mb-3">
+            <h5>极大线性无关组</h5>
+            <p class="mb-0">满足以下条件的向量子集：</p>
+            <ul>
+                <li>自身线性无关</li>
+                <li>可表示原向量组所有向量</li>
+            </ul>
+        </div>
+        <img src="{{ url_for('plot_basis') }}" class="img-fluid mt-3" alt="平面图像">
+        <div class="concept-item bg-light p-3 rounded">
+            <h5>矩阵秩的性质</h5>
+            <ul>
+                <li>行秩 = 列秩</li>
+                <li>初等变换不改变秩</li>
+                <li>极大组向量数 = 秩</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 交互教学区 -->
+    <div class="theory-card mt-4">
+        <h3 class="mb-4"><i class="fas fa-handshake me-2"></i>交互演示</h3>
+        <div class="row g-4">
+            <!-- 矩阵输入区 -->
+            <div class="col-lg-5">
+                <div class="matrix-editor">
+                    <h5><i class="fas fa-edit me-2"></i>矩阵输入</h5>
+                    <div id="vectorInputs" class="mb-3">
+                        <!-- 动态生成的输入框 -->
+                    </div>
+                    <button class="btn btn-sm btn-success" id="addRowBtn">
+                        <i class="fas fa-plus me-1"></i>添加行向量
+                    </button>
+                </div>
+            </div>
+
+            <!-- 计算过程区 -->
+            <div class="col-lg-7">
+                <div class="matrix-editor h-100">
+                    <h5><i class="fas fa-project-diagram me-2"></i>计算过程</h5>
+                    <div class="operation-log" id="operationLog">
+                        <!-- 计算步骤将显示在此 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="/static/katex/katex.min.js"></script>
+<script src="/static/katex/auto-render.min.js"></script>
+<script>
+    const MatrixApp = {
+        matrix: [],
+        basisIndices: [],
+
+        init() {
+            this.bindEvents();
+            this.loadExample('standard');
+            {#this.renderMath();#}
+        },
+
+        bindEvents() {
+            // 添加行事件
+            document.getElementById('addRowBtn').addEventListener('click', () => this.addRow());
+
+            // 输入更新委托
+            document.getElementById('vectorInputs').addEventListener('input', (e) => {
+                const input = e.target;
+                if (input.classList.contains('vector-input')) {
+                    const row = input.closest('.vector-input-group').dataset.rowIndex;
+                    const col = input.dataset.colIndex;
+                    this.updateMatrix(parseInt(row), parseInt(col), input.value);
+                }
+            });
+
+            // 删除行委托
+            document.getElementById('vectorInputs').addEventListener('click', (e) => {
+                if (e.target.closest('.remove-row-btn')) {
+                    const row = e.target.closest('.vector-input-group').dataset.rowIndex;
+                    this.removeRow(parseInt(row));
+                }
+            });
+        },
+
+        loadExample() {
+            // 默认加载标准基底
+            this.matrix = [[1,0,0], [0,1,0], [0,0,1]];
+            this.renderInputs();
+            this.updateAnalysis();
+        },
+
+        renderInputs() {
+            const container = document.getElementById('vectorInputs');
+            container.innerHTML = this.matrix.map((row, i) => `
+                <div class="vector-input-group" data-row-index="${i}">
+                    <span class="text-muted">α${i+1}</span>
+                    ${row.map((val, j) => `
+                        <input type="number" value="${val}"
+                               class="vector-input"
+                               data-col-index="${j}"
+                               data-row-index="${i}">
+                    `).join('')}
+                    <button class="btn btn-sm btn-outline-danger remove-row-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        },
+
+        formatNumber(num) {
+            if (Number.isInteger(num)) return num;
+            return num.toFixed(2).replace(/\.?0+$/, '');
+        },
+
+        matrixToLatex(matrix) {
+            if (!matrix || matrix.length === 0 || matrix[0].length === 0) {
+                return "\\text{空矩阵}";  // 处理空矩阵情况
+            }
+
+            return `\\begin{bmatrix}
+                ${matrix.map(row =>
+                    row.map(x => this.formatNumber(x)).join(' & ')
+                ).join(' \\\\ ')}
+            \\end{bmatrix}`;
+        },
+
+        createStep(number, title, matrix, description) {
+            // 确保总是返回有效的latex属性
+            return {
+                number,
+                title,
+                description,
+                latex: matrix ? this.matrixToLatex(matrix) : ""
+            };
+        },
+        addRow() {
+            const cols = this.matrix[0] ? this.matrix[0].length : 3;
+            this.matrix.push(new Array(cols).fill(0));
+            this.renderInputs();
+            this.updateAnalysis();
+        },
+
+        removeRow(index) {
+            this.matrix.splice(index, 1);
+            this.renderInputs();
+            this.updateAnalysis();
+        },
+
+        updateMatrix(row, col, value) {
+            if (!this.matrix[row]) return;
+            this.matrix[row][col] = parseFloat(value) || 0;
+            this.updateAnalysis();
+        },
+
+        updateAnalysis() {
+            const steps = [];
+            let stepCount = 1;
+            this.basisIndices = [];
+
+            if (this.matrix.length === 0 || this.matrix[0].length === 0) {
+                this.renderSteps(steps);
+                return;
+            }
+
+            let currentMatrix = this.matrix.map(row => [...row]);
+            const rows = currentMatrix.length;
+            const cols = currentMatrix[0].length;
+            const rowMap = Array.from({length: rows}, (_, i) => i); // 新增行映射跟踪
+
+            steps.push(this.createStep(
+                stepCount++,
+                "初始矩阵",
+                currentMatrix,
+                "开始高斯消元过程"
+            ));
+
+            for (let col = 0; col < cols; col++) {
+                let pivotRow = -1;
+                for (let row = col; row < rows; row++) {
+                    if (Math.abs(currentMatrix[row][col]) > 1e-6) {
+                        pivotRow = row;
+                        break;
+                    }
+                }
+                if (pivotRow === -1) continue;
+
+                // 行交换（包含行映射更新）
+                if (pivotRow !== col) {
+                    [currentMatrix[col], currentMatrix[pivotRow]] = [currentMatrix[pivotRow], currentMatrix[col]];
+                    [rowMap[col], rowMap[pivotRow]] = [rowMap[pivotRow], rowMap[col]]; // 更新行映射
+                }
+
+                // 归一化
+                const pivotValue = currentMatrix[col][col];
+                if (Math.abs(pivotValue - 1) > 1e-6) {
+                    currentMatrix[col] = currentMatrix[col].map(x => x / pivotValue);
+                    steps.push(this.createStep(
+                        stepCount++,
+                        `归一化 R${col+1} ÷ ${this.formatNumber(pivotValue)}`,
+                        currentMatrix,
+                        `将主元化为 1`
+                    ));
+                }
+
+                // 消元
+                for (let row = 0; row < rows; row++) {
+                    if (row === col || !currentMatrix[row]) continue;
+                    const factor = currentMatrix[row][col];
+                    if (Math.abs(factor) > 1e-6) {
+                        currentMatrix[row] = currentMatrix[row].map((val, i) =>
+                            val - factor * currentMatrix[col][i]
+                        );
+                        steps.push(this.createStep(
+                            stepCount++,
+                            `消元 R${row+1} - ${this.formatNumber(factor)}×R${col+1}`,
+                            currentMatrix,
+                            `消除第 ${col+1} 列元素`
+                        ));
+                    }
+                }
+                this.basisIndices.push(rowMap[col]);
+            }
+
+            // 显示最终结果
+            steps.push({
+                type: 'result',
+                rank: this.basisIndices.length,
+                basisIndices: [...this.basisIndices] // 存储原始行索引
+            });
+
+            this.renderSteps(steps);
+
+        },
+        renderSteps(steps) {
+            const logContainer = document.getElementById('operationLog');
+            while (logContainer.firstChild) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+            logContainer.innerHTML = steps.map(step => {
+            if (step.type === 'result') {
+                return `
+                    <div class="alert alert-success mt-3">
+                        <h5>计算结果</h5>
+                        <div>矩阵秩：<strong>${step.rank}</strong></div>
+                        <div>极大无关组索引：${step.basisIndices.map(i => i + 1).join(', ')}</div>
+                    </div>
+                `;
+            }
+            const latex = step.latex || "\\begin{bmatrix}\\end{bmatrix}";
+            return `
+                <div class="matrix-step">
+                    <div class="step-header">
+                        <span class="badge bg-primary">步骤 ${step.number}</span>
+                        <small>${step.description}</small>
+                    </div>
+                    <div class="mt-2">${step.title}</div>
+                    <div class="katex-target">\\[${latex}\\]</div>
+                </div>
+            `;
+            }).join('');
+
+            // 修复公式渲染
+            setTimeout(() => {
+                renderMathInElement(logContainer, {
+                    delimiters: [
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ],
+                    macros: {
+                        "\\b": "\\mathbf",
+                        "\\v": "\\overrightarrow"
+                    },
+                    ignoredTags: ["script", "noscript", "style"], // 排除非数学内容
+                    throwOnError: false,
+                    output: "mathml"
+                });
+            }, 0);
+        },
+
+    };
+
+    // 初始化应用
+    document.addEventListener('DOMContentLoaded', () => {
+        MatrixApp.init();
+    });
+</script>
+{% endblock %}

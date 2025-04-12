@@ -1,0 +1,9 @@
+flask
+numpy
+matplotlib
+pillow
+sympy
+plotly
+imageio
+Flask-Bootstrap
+seaborn
