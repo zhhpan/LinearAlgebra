@@ -47,6 +47,10 @@
         padding-left: 15px;
         margin: 25px 0;
     }
+    .animation-gif {
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
     /* 添加颜色定义 */
     .katex .red { color: #e74c3c; }
     .katex .blue { color: #3498db; }
@@ -152,16 +156,24 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-center">
                             <div class="matrix-container" id="matrix2x2">
+                                <form method="post">
                                 <div class="matrix-row mb-2">
-                                    <input type="number" class="matrix-input" value="1">
-                                    <input type="number" class="matrix-input" value="0">
+                                    <input type="number" name="a" class="matrix-input" value="1">
+                                    <input type="number" name="b" class="matrix-input" value="0">
                                 </div>
                                 <div class="matrix-row">
-                                    <input type="number" class="matrix-input" value="0">
-                                    <input type="number" class="matrix-input" value="1">
+                                    <input type="number" name="c" class="matrix-input" value="0">
+                                    <input type="number" name="d" class="matrix-input" value="1">
                                 </div>
+                                <div class="text-center mt-3">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-play-circle"></i> 生成动画
+                                    </button>
+                                </div>
+                                </form>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -179,6 +191,18 @@
                         </div>
                     </div>
                 </div>
+
+            </div>
+            <div class="col-lg-6">
+                {% if gif_url %}
+                    <div class="animation-result mt-4">
+                        <h4>变换效果可视化：</h4>
+                        <div class="animation-wrapper">
+                            <img src="{{ gif_url }}" alt="线性变换动画" class="animation-gif" id="gif-image" >
+                        </div>
+                        <button onclick="replayGIF()" style="margin-top:10px;">重新播放</button>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -204,6 +228,10 @@
     document.querySelectorAll('.matrix-input').forEach(input => {
         input.addEventListener('input', updateDeterminant);
     });
+    function replayGIF() {
+        const img = document.getElementById('gif-image');
+        img.src = "{{ gif_url }}?t=" + new Date().getTime(); // 添加时间戳避免缓存
+    }
 
     function updateDeterminant() {
         const inputs = Array.from(document.querySelectorAll('.matrix-input'));

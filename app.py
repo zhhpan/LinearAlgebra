@@ -6,6 +6,7 @@ from flask_bootstrap import Bootstrap
 
 from utils.add import process_vectors, clean_old_files
 from utils.basis import basis_plot
+from utils.determinant import generate_determinant_gif
 from utils.feature import generate_transformation_gif
 from utils.solve import cramer_method, gauss_elimination, plot_planes
 
@@ -172,7 +173,18 @@ def quadratic():
 
 @app.route('/determinant', methods=["GET", "POST"])
 def determinate():
-    return render_template('determinant.html')
+    gif_url = None
+    if request.method == 'POST':
+        # 从表单获取矩阵元素
+        a = float(request.form['a'])
+        b = float(request.form['b'])
+        c = float(request.form['c'])
+        d = float(request.form['d'])
+        A = np.array([[a, b], [c, d]])
+        # 生成 GIF
+        filename = generate_determinant_gif(A)
+        gif_url = f"static/determinant/determinant_area.gif"
+    return render_template('determinant.html', gif_url=gif_url)
 
 
 @app.route('/basis', methods=["GET", "POST"])

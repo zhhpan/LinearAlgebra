@@ -1,13 +1,15 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
+from matplotlib.patches import Patch
 
 def plot_planes(A, b):
     sns.set_theme(style="whitegrid")
-    fig = plt.figure(figsize=(4, 3))
+    fig = plt.figure(figsize=(5, 4))
     ax = fig.add_subplot(111, projection="3d")
 
-    x = y = np.linspace(-15, 15, 15)
+    # 网格分辨率更高，范围更大，避免曲面过度畸形
+    x = y = np.linspace(-30, 30, 20)
     X, Y = np.meshgrid(x, y)
 
     try:
@@ -26,59 +28,69 @@ def plot_planes(A, b):
     }
 
     colors = ['#FF4755', '#2ED573', '#5352ED']
-    labels = ['平面1', '平面2', '平面3']
+    labels = ['Plant 1', 'Plant 2', 'Plant 3']
 
+    # 绘制平面
     for i in range(3):
         a, b_coeff, c = A[i]
-        d = c if c != 0 else 1e-6
+
+        # 避免 c=0 除零错误
+        d = c if abs(c) > 1e-6 else 1e-6
+
         Z = (b[i] - a * X - b_coeff * Y) / d
-        surf = ax.plot_surface(X, Y, Z, color=colors[i], label=labels[i], **plane_params)
+        surf = ax.plot_surface(X, Y, Z, color=colors[i], **plane_params)
+
+        # 强制让图例不会因为plot_surface无法识别label而丢失
         surf._facecolors2d = surf._facecolor3d
         surf._edgecolors2d = surf._edgecolor3d
 
+    # 绘制解的点
     if has_solution:
         x_sol, y_sol, z_sol = solution
         ax.scatter(
             x_sol, y_sol, z_sol,
             s=150,
             color='#FFD700',
-            linewidth=2.5,
-            label='Solving Point',
+            edgecolors='black',
+            linewidth=1.2,
+            label='解的坐标',
             zorder=100
         )
-        # XYZ三轴方向的参考线
-        ax.plot([x_sol, x_sol], [y_sol, y_sol], [z_sol - 10, z_sol + 10], color='black', linestyle='--', linewidth=1)
-        ax.plot([x_sol, x_sol], [y_sol - 10, y_sol + 10], [z_sol, z_sol], color='black', linestyle='--', linewidth=1)
-        ax.plot([x_sol - 10, x_sol + 10], [y_sol, y_sol], [z_sol, z_sol], color='black', linestyle='--', linewidth=1)
 
-        for coord, color in zip([x_sol, y_sol, z_sol], ['#FF0000', '#00FF00', '#0000FF']):
-            ax.plot(
-                [coord, coord], [y_sol, y_sol], [z_sol-3, z_sol+3],
-                color=color,
-                linestyle='-',
-                alpha=1,
-                linewidth=1.2
-            )
+        # 辅助线：x/y/z轴方向参考
+        ax.plot([x_sol, x_sol], [y_sol, y_sol], [z_sol - 5, z_sol + 5], color='#FF0000', linestyle='-', linewidth=1.2)
+        ax.plot([x_sol, x_sol], [y_sol - 5, y_sol + 5], [z_sol, z_sol], color='#00FF00', linestyle='-', linewidth=1.2)
+        ax.plot([x_sol - 5, x_sol + 5], [y_sol, y_sol], [z_sol, z_sol], color='#0000FF', linestyle='-', linewidth=1.2)
 
     # 坐标轴设置
-    ax.set_xlabel('X Axis', fontsize=8, labelpad=8)
-    ax.set_ylabel('Y Axis', fontsize=8, labelpad=8)
-    ax.set_zlabel('Z Axis', fontsize=8, labelpad=8)
+    ax.set_xlabel('X Axis', fontsize=9, labelpad=8)
+    ax.set_ylabel('Y Axis', fontsize=9, labelpad=8)
+    ax.set_zlabel('Z Axis', fontsize=9, labelpad=8)
     ax.tick_params(axis='both', which='major', labelsize=6)
 
-    # 图例优化
+    # 用 proxy artist 补全图例
+    proxies = [Patch(facecolor=colors[i], label=labels[i], alpha=0.3) for i in range(3)]
+    if has_solution:
+        proxies.append(
+            plt.Line2D([0], [0], marker='o', color='w', label='Solving Point',
+                       markerfacecolor='#FFD700', markersize=8, markeredgecolor='black')
+        )
+
     ax.legend(
+        handles=proxies,
         loc='upper right',
-        fontsize=6,
-        markerscale=0.4,
+        fontsize=7,
         frameon=True,
         shadow=True,
         facecolor='white',
         edgecolor='gray'
     )
 
-    ax.view_init(elev=30, azim=45)
-    plt.savefig("static/solve/plot.png", dpi=200, bbox_inches='tight')  # 降低dpi至200
+    # 调整视角
+    ax.view_init(elev=20, azim=120)
+
+    # 保存图片
+    plt.savefig("static/solve/plot.png", dpi=200, bbox_inches='tight')
     plt.close()
 
 

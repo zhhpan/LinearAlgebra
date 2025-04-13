@@ -356,6 +356,7 @@
                 <button type="submit" class="btn btn-primary btn-lg">
                     <i class="bi bi-play-circle"></i> 生成动画
                 </button>
+
             </div>
         </form>
 
@@ -363,8 +364,9 @@
             <div class="animation-result mt-4">
                 <h4>变换效果可视化：</h4>
                 <div class="animation-wrapper">
-                    <img src="{{ gif_url }}" alt="线性变换动画" class="animation-gif">
+                    <img src="{{ gif_url }}" alt="线性变换动画" class="animation-gif" id="gif-image">
                 </div>
+                <button onclick="replayGIF()" style="margin-top:10px;">重新播放</button>
             </div>
         {% endif %}
     </div>
@@ -380,7 +382,10 @@ const ctx = canvas.getContext('2d');
 let P = {x:1, y:0};
 let isDragging = false;
 const scale = 50;
-
+function replayGIF() {
+    const img = document.getElementById('gif-image');
+    img.src = "{{ gif_url }}?t=" + new Date().getTime(); // 添加时间戳避免缓存
+}
 const toCanvas = (x,y) => ({
   x: canvas.width/2 + x*scale,
   y: canvas.height/2 - y*scale
