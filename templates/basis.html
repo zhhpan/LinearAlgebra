@@ -80,6 +80,16 @@
         padding: 1.2rem;
         border-radius: 6px;
     }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f1f3f5;
+    }
+    .concept-header {
+        color: #2c3e50;
+        border-left: 4px solid #3498db;
+        padding-left: 15px;
+        margin: 25px 0;
+    }
 </style>
 {% endblock %}
 
@@ -94,7 +104,7 @@
 
     <!-- 理论展示区 -->
     <div class="theory-card">
-        <h3 class="mb-4"><i class="fas fa-shapes me-2"></i>核心概念</h3>
+        <h2 class="concept-header">核心概念</h2>
         <div class="concept-item bg-light p-3 rounded mb-3">
             <h5>极大线性无关组</h5>
             <p class="mb-0">满足以下条件的向量子集：</p>
@@ -116,7 +126,7 @@
 
     <!-- 交互教学区 -->
     <div class="theory-card mt-4">
-        <h3 class="mb-4"><i class="fas fa-handshake me-2"></i>交互演示</h3>
+        <h2 class="concept-header">交互演示</h2>
         <div class="row g-4">
             <!-- 矩阵输入区 -->
             <div class="col-lg-5">

@@ -176,6 +176,129 @@ a.back-home:hover {
         font-size: 2em;
     }
 }
+.vector-input-group {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+.vector-input-group:hover {
+    background: #f1f3f5;
+    transform: translateY(-2px);
+}
+.vector-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.vector-label i {
+    font-size: 1.3em;
+}
+.matrix-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+}
+.matrix-inputs {
+    display: grid;
+    gap: 0.8rem;
+}
+.matrix-inputs input {
+    width: 80px;
+    height: 42px;
+    font-size: 1.1em;
+}
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .vector-input-group {
+        padding: 1rem;
+    }
+    .matrix-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .matrix-inputs {
+        grid-template-columns: repeat(2, 1fr); /* 二维向量水平排列 */
+    }
+    .matrix-inputs input {
+        width: 100%;
+        max-width: 80px;
+        height: 38px;
+    }
+    .vector-label {
+        font-size: 1rem;
+        justify-content: center;
+    }
+}
+@media (max-width: 576px) {
+    .matrix-inputs {
+        grid-template-columns: 1fr; /* 一维垂直排列 */
+    }
+    .matrix-inputs input {
+        max-width: 100%;
+    }
+}
+.control-sidebar {
+    border: 1px solid rgba(43,108,176,0.15);
+    background: linear-gradient(145deg, #f8fafc, #ffffff);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.vector-input-group {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(4px);
+    border: 2px solid rgba(43,108,176,0.1);
+}
+
+.matrix-inputs input {
+    background: rgba(255,255,255,0.95);
+    border: 2px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.matrix-inputs input:focus {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(147,197,253,0.3);
+}
+
+.operation-symbol {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .matrix-container {
+        margin: 0.5rem 0;
+    }
+    .operation-symbol {
+        transform: rotate(90deg);
+        margin: 1rem auto;
+    }
+}
+.concept-header {
+    color: #2c3e50;
+    border-left: 4px solid #3498db;
+    padding-left: 15px;
+    margin: 25px 0;
+}
+.theory-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    margin: 1.5rem 0;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.theory-card:hover {
+    transform: translateY(-5px);
+}
 </style>
 {% endblock %}
 
@@ -187,186 +310,218 @@ a.back-home:hover {
         </a>
     </div>
     <!-- 理论区 -->
-    <section class="theory-section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-10">
-                    <div class="math-card">
-                        <h2 class="math-title">向量运算基础</h2>
 
-                        <h4 class="mt-4">一、向量加法</h4>
-                        <div class="formula-box">
-                            <p>对于两个向量：</p>
-                            <p>\[
-                                \vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{pmatrix}, \quad
-                                \vec{b} = \begin{pmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{pmatrix}
-                            \]</p>
-                            <p>则：</p>
-                            <p>\[
-                                \vec{a} + \vec{b} = \begin{pmatrix} a_1 + b_1 \\ a_2 + b_2 \\ \vdots \\ a_n + b_n \end{pmatrix}
-                            \]</p>
-                        </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="theory-card">
+                    <h2 class=" concept-header">1.向量运算基础</h2>
 
-                        <h4 class="mt-4">二、向量减法</h4>
-                        <div class="formula-box">
-                            <p>\[
-                                \vec{a} - \vec{b} = \begin{pmatrix} a_1 - b_1 \\ a_2 - b_2 \\ \vdots \\ a_n - b_n \end{pmatrix}
-                            \]</p>
-                            <p>可理解为加上\(-\vec{b}\)，方向从 \(\vec{b}\) 指向 \(\vec{a}\)。</p>
-                        </div>
+                    <h4 class="mt-4">一、向量加法</h4>
+                    <div class="formula-box">
+                        <p>对于两个向量：</p>
+                        <p>\[
+                            \vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{pmatrix}, \quad
+                            \vec{b} = \begin{pmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{pmatrix}
+                        \]</p>
+                        <p>则：</p>
+                        <p>\[
+                            \vec{a} + \vec{b} = \begin{pmatrix} a_1 + b_1 \\ a_2 + b_2 \\ \vdots \\ a_n + b_n \end{pmatrix}
+                        \]</p>
+                    </div>
 
-                        <h4 class="mt-4">三、几何解释</h4>
-                        <div class="formula-box">
-                            <p>平行四边形法则与三角形法则可帮助理解加减法的空间意义。</p>
-                        </div>
+                    <h4 class="mt-4">二、向量减法</h4>
+                    <div class="formula-box">
+                        <p>\[
+                            \vec{a} - \vec{b} = \begin{pmatrix} a_1 - b_1 \\ a_2 - b_2 \\ \vdots \\ a_n - b_n \end{pmatrix}
+                        \]</p>
+                        <p>可理解为加上\(-\vec{b}\)，方向从 \(\vec{b}\) 指向 \(\vec{a}\)。</p>
+                    </div>
 
-                        <h4 class="mt-4">四、数乘</h4>
-                        <div class="formula-box">
-                            <p>向量乘以标量 \(k\)：</p>
-                            <p>\[
-                                k \vec{a} = \begin{pmatrix} ka_1 \\ ka_2 \\ \vdots \\ ka_n \end{pmatrix}
-                            \]</p>
-                            <p>改变向量长度，不改变方向（或取反）。</p>
-                        </div>
+                    <h4 class="mt-4">三、几何解释</h4>
+                    <div class="formula-box">
+                        <p>平行四边形法则与三角形法则可帮助理解加减法的空间意义。</p>
+                    </div>
 
-                        <h4 class="mt-4">五、单位向量</h4>
-                        <div class="formula-box">
-                            <p>将非零向量单位化：</p>
-                            <p>\[
-                                \hat{a} = \frac{\vec{a}}{\|\vec{a}\|} = \frac{1}{\sqrt{a_1^2 + \cdots + a_n^2}} \vec{a}
-                            \]</p>
-                            <p>单位向量的模恒为 1。</p>
-                        </div>
+                    <h4 class="mt-4">四、数乘</h4>
+                    <div class="formula-box">
+                        <p>向量乘以标量 \(k\)：</p>
+                        <p>\[
+                            k \vec{a} = \begin{pmatrix} ka_1 \\ ka_2 \\ \vdots \\ ka_n \end{pmatrix}
+                        \]</p>
+                        <p>改变向量长度，不改变方向（或取反）。</p>
+                    </div>
 
-                        <h4 class="mt-4">六、叉乘</h4>
-                        <div class="formula-box">
-                            <p>定义如下：</p>
-                            <p>\[
-                                \vec{a} \times \vec{b} = \begin{pmatrix}
-                                    a_2b_3 - a_3b_2 \\
-                                    a_3b_1 - a_1b_3 \\
-                                    a_1b_2 - a_2b_1
-                                \end{pmatrix}
-                            \]</p>
-                            <p>结果向量垂直于 \(\vec{a}, \vec{b}\)，方向由右手法则确定。</p>
-                        </div>
+                    <h4 class="mt-4">五、单位向量</h4>
+                    <div class="formula-box">
+                        <p>将非零向量单位化：</p>
+                        <p>\[
+                            \hat{a} = \frac{\vec{a}}{\|\vec{a}\|} = \frac{1}{\sqrt{a_1^2 + \cdots + a_n^2}} \vec{a}
+                        \]</p>
+                        <p>单位向量的模恒为 1。</p>
+                    </div>
 
-                        <h4 class="mt-4">七、向量内积（点积）</h4>
-                        <div class="formula-box">
-                            <p>对于两个\( n \)维向量：</p>
-                            <p>\[
-                                \vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{pmatrix}, \quad
-                                \vec{b} = \begin{pmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{pmatrix}
-                            \]</p>
-                            <p>其内积（点积）定义为：</p>
-                            <p>\[
-                                \vec{a} \cdot \vec{b} = a_1 b_1 + a_2 b_2 + \cdots + a_n b_n = \sum_{i=1}^{n} a_i b_i
-                            \]</p>
-                            <p>几何意义上，内积也可以表示为：</p>
-                            <p>\[
-                                \vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos{\theta}
-                            \]</p>
-                            <p>其中 \(\theta\) 是两个向量的夹角。</p>
-                        </div>
+                    <h4 class="mt-4">六、叉乘</h4>
+                    <div class="formula-box">
+                        <p>定义如下：</p>
+                        <p>\[
+                            \vec{a} \times \vec{b} = \begin{pmatrix}
+                                a_2b_3 - a_3b_2 \\
+                                a_3b_1 - a_1b_3 \\
+                                a_1b_2 - a_2b_1
+                            \end{pmatrix}
+                        \]</p>
+                        <p>结果向量垂直于 \(\vec{a}, \vec{b}\)，方向由右手法则确定。</p>
+                    </div>
 
-                        <h4 class="mt-4">八、向量的正交性</h4>
-                        <div class="formula-box">
-                            <p>两个向量如果满足内积为零：</p>
-                            <p>\[
-                                \vec{a} \cdot \vec{b} = 0
-                            \]</p>
-                            <p>则称 \(\vec{a}\) 与 \(\vec{b}\) 正交，几何上表示它们互相垂直。</p>
-                            <p>特别地，若：</p>
-                            <p>\[
-                                \vec{a} \neq \vec{0}, \quad \vec{b} \neq \vec{0}, \quad \text{且} \quad \vec{a} \cdot \vec{b} = 0
-                            \]</p>
-                            <p>则说明两个向量在空间中的夹角为90度。</p>
-                        </div>
+                    <h4 class="mt-4">七、向量内积（点积）</h4>
+                    <div class="formula-box">
+                        <p>对于两个\( n \)维向量：</p>
+                        <p>\[
+                            \vec{a} = \begin{pmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{pmatrix}, \quad
+                            \vec{b} = \begin{pmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{pmatrix}
+                        \]</p>
+                        <p>其内积（点积）定义为：</p>
+                        <p>\[
+                            \vec{a} \cdot \vec{b} = a_1 b_1 + a_2 b_2 + \cdots + a_n b_n = \sum_{i=1}^{n} a_i b_i
+                        \]</p>
+                        <p>几何意义上，内积也可以表示为：</p>
+                        <p>\[
+                            \vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos{\theta}
+                        \]</p>
+                        <p>其中 \(\theta\) 是两个向量的夹角。</p>
+                    </div>
+
+                    <h4 class="mt-4">八、向量的正交性</h4>
+                    <div class="formula-box">
+                        <p>两个向量如果满足内积为零：</p>
+                        <p>\[
+                            \vec{a} \cdot \vec{b} = 0
+                        \]</p>
+                        <p>则称 \(\vec{a}\) 与 \(\vec{b}\) 正交，几何上表示它们互相垂直。</p>
+                        <p>特别地，若：</p>
+                        <p>\[
+                            \vec{a} \neq \vec{0}, \quad \vec{b} \neq \vec{0}, \quad \text{且} \quad \vec{a} \cdot \vec{b} = 0
+                        \]</p>
+                        <p>则说明两个向量在空间中的夹角为90度。</p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- 演示区 -->
-    <section class="demo-section">
-        <!-- 控制面板 -->
-    <div class="math-card">
-        <form method="POST">
-            <div class="row g-3">
-                <!-- 向量输入 -->
-                <div class="col-12">
-                    <div class="d-flex justify-content-center gap-4">
-                        <div class="matrix-container">
-                            <span class="matrix-bracket">[</span>
-                            <div class="matrix-inputs">
-                                <label class="form-label fw-bold">向量 v1</label>
-                                {% for i in range(vector_size) %}
-                                    <input type="number" step="any"
-                                           class="form-control"
-                                           name="v1_{{ i }}"
-                                           value="{{ v1[i] if v1 else '' }}" required>
-                                {% endfor %}
+    <div class="container">
+    <div class="theory-card">
+        <h2 class="concept-header">2.向量运算演示</h2>
+
+        <div class="formula-box p-4 mb-4">
+            <form method="POST">
+                <div class="row g-4">
+                    <!-- 输入向量组 -->
+                    <div class="col-12 col-lg-8">
+                        <div class="row g-4">
+                            <!-- 向量A -->
+                            <div class="col-12 col-md-6">
+                                <div class="vector-input-group">
+                                    <h5 class="vector-label text-primary mb-3">
+                                        <i class="fas fa-arrow-circle-right"></i>
+                                        输入向量A
+                                    </h5>
+                                    <div class="matrix-container">
+                                        <span class="matrix-bracket">[</span>
+                                        <div class="matrix-inputs row g-2">
+                                            {% for i in range(vector_size) %}
+                                            <div class="col">
+                                                <input type="number" step="any"
+                                                       class="form-control text-center"
+                                                       name="v1_{{ i }}"
+                                                       placeholder="{{ i + 1 }}"
+                                                       value="{{ v1[i] if v1 else '' }}"
+                                                       required>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <span class="matrix-bracket">]</span>
+                                    </div>
+                                </div>
                             </div>
-                            <span class="matrix-bracket">]</span>
+
+                            <!-- 向量B -->
+                            <div class="col-12 col-md-6">
+                                <div class="vector-input-group">
+                                    <h5 class="vector-label text-danger mb-3">
+                                        <i class="fas fa-arrow-circle-left"></i>
+                                        输入向量B
+                                    </h5>
+                                    <div class="matrix-container">
+                                        <span class="matrix-bracket">[</span>
+                                        <div class="matrix-inputs row g-2">
+                                            {% for i in range(vector_size) %}
+                                            <div class="col">
+                                                <input type="number" step="any"
+                                                       class="form-control text-center"
+                                                       name="v2_{{ i }}"
+                                                       placeholder="{{ i + 1 }}"
+                                                       value="{{ v2[i] if v2 else '' }}"
+                                                       required>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <span class="matrix-bracket">]</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="matrix-container">
-                            <span class="matrix-bracket">[</span>
-                            <div class="matrix-inputs">
-                                <label class="form-label fw-bold">向量 v2</label>
-                                {% for i in range(vector_size) %}
-                                    <input type="number" step="any"
-                                           class="form-control"
-                                           name="v2_{{ i }}"
-                                           value="{{ v2[i] if v2 else '' }}" required>
-                                {% endfor %}
+                    <!-- 控制面板 -->
+                    <div class="col-12 col-lg-4">
+                        <div class="control-panel bg-light p-3 rounded">
+                            <div class="mb-4">
+                                <h5 class="concept-header fs-5 mb-3">
+                                    <i class="fas fa-sliders-h"></i>
+                                    参数设置
+                                </h5>
+
+                                <!-- 维度选择 -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">空间维度</label>
+                                    <select class="form-select" name="dimension" id="dimension">
+                                        <option value="2d" {% if dimension == '2d' %}selected{% endif %}>二维平面</option>
+                                        <option value="3d" {% if dimension == '3d' %}selected{% endif %}>三维空间</option>
+                                    </select>
+                                </div>
+
+                                <!-- 运算选择 -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">运算类型</label>
+                                    <select class="form-select" name="operation">
+                                        <option value="add">向量相加</option>
+                                        <option value="subtract">向量相减</option>
+                                    </select>
+                                </div>
                             </div>
-                            <span class="matrix-bracket">]</span>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-calculator me-2"></i>执行运算
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary" id="reset">
+                                    <i class="fas fa-undo me-2"></i>重置输入
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- 维度选择 -->
-                <div class="col-md-6">
-                    <label class="form-label">维度</label>
-                    <select class="form-select" name="dimension" id="dimension">
-                        <option value="2d" {% if dimension == '2d' %}selected{% endif %}>二维</option>
-                        <option value="3d" {% if dimension == '3d' %}selected{% endif %}>三维</option>
-                    </select>
-                </div>
-
-                <!-- 运算选择 -->
-                <div class="col-md-6">
-                    <label class="form-label">运算类型</label>
-                    <select class="form-select" name="operation">
-                        <option value="add" {% if operation == 'add' %}selected{% endif %}>加法</option>
-                        <option value="subtract" {% if operation == 'subtract' %}selected{% endif %}>减法</option>
-{#                        <option value="cross" {% if operation == 'cross' %}selected{% endif %}>叉乘</option>#}
-{#                        <option value="orthogonal" {% if operation == 'orthogonal' %}selected{% endif %}>正交判断</option>#}
-                    </select>
-                </div>
-
-
-
-                <!-- 操作按钮 -->
-                <div class="col-12 d-flex gap-3 justify-content-end">
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="fas fa-play me-2"></i>执行运算
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-undo me-2"></i>重置
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-
     <!-- 结果展示 -->
     {% if result is not none or is_orthogonal is not none %}
     <div class="row mt-4">
         <!-- 可视化区域 -->
         <div class="col-lg-6 mb-4">
-            <div class="math-card">
+            <div class="theory-card">
                 <h4 class="mb-3"><i class="fas fa-chart-area me-2"></i>可视化展示</h4>
                 <div class="media-container">
                     {% if plot_html %}
@@ -379,8 +534,9 @@ a.back-home:hover {
         </div>
 
         <!-- 结果区域 -->
+
         <div class="col-lg-6">
-            <div class="math-card">
+            <div class="theory-card">
                 <h4 class="mb-3"><i class="fas fa-calculator me-2"></i>运算结果</h4>
 
                 {% if operation == 'orthogonal' %}
@@ -463,8 +619,9 @@ a.back-home:hover {
             </div>
         </div>
     </div>
+    </div>
     {% endif %}
-    </section>
+
 </div>
 {% endblock %}
 
@@ -472,6 +629,18 @@ a.back-home:hover {
 {{ super() }}
 <script>
 // 动态维度处理
+document.getElementById('reset').addEventListener('click', function() {
+    const vectorSize = 2;
+    // 更新所有矩阵输入框数量
+    document.querySelectorAll('.matrix-inputs').forEach(container => {
+        container.innerHTML = Array.from({length: vectorSize}, (_, i) =>
+            `<input type="text" class="form-control matrix-element"
+                    name="${container.closest('.matrix-container').contains(document.querySelector('[name^="v1_"]')) ? 'v1' : 'v2'}_${i}"
+                    required>`
+        ).join('');
+    });
+});
+
 document.getElementById('dimension').addEventListener('change', function() {
     const dimension = this.value;
     const vectorSize = dimension === '2d' ? 2 : 3;
@@ -485,6 +654,7 @@ document.getElementById('dimension').addEventListener('change', function() {
         ).join('');
     });
 });
+
 function replayGIF() {
     const img = document.querySelector('.media-container img');
     if (img) {

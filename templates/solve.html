@@ -149,79 +149,77 @@
         </div>
     </section>
     <!-- 演示区 -->
-    <section class="demo-section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-10">
-                    <h2 class="math-title mb-4">交互演示</h2>
-
-                    <div class="math-card mb-4">
-                        <form method="POST">
-                            <!-- 方程输入表格 -->
-                            <div class="equation-table">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead >
-                                            <tr>
-                                                <th>方程</th>
-                                                <th>x系数</th>
-                                                <th>y系数</th>
-                                                <th>z系数</th>
-                                                <th>常数项</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>方程1</td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="a1" value="{{ request.form.a1 }}" placeholder="a₁" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="b1" value="{{ request.form.b1 }}" placeholder="b₁" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="c1" value="{{ request.form.c1 }}" placeholder="c₁" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="d1" value="{{ request.form.d1 }}" placeholder="d₁" required>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>方程2</td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="a2" value="{{ request.form.a2 }}" placeholder="a₂" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="b2" value="{{ request.form.b2 }}" placeholder="b₂" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="c2" value="{{ request.form.c2 }}" placeholder="c₂" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="d2" value="{{ request.form.d2 }}" placeholder="d₂" required>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>方程3</td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="a3" value="{{ request.form.a3 }}" placeholder="a₃" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="b3" value="{{ request.form.b3 }}" placeholder="b₃" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="c3" value="{{ request.form.c3 }}" placeholder="c₃" required>
-                                                </td>
-                                                <td>
-                                                    <input type="number" step="any" class="form-control" name="d3" value="{{ request.form.d3 }}" placeholder="d₃" required>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="math-card mb-4">
+                <h2 class="equation-title">交互演示</h2>
+                    <form method="POST">
+                        <!-- 方程输入表格 -->
+                        <div class="equation-table">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead >
+                                        <tr>
+                                            <th>方程</th>
+                                            <th>x系数</th>
+                                            <th>y系数</th>
+                                            <th>z系数</th>
+                                            <th>常数项</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>方程1</td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="a1" value="{{ request.form.a1 }}" placeholder="a₁" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="b1" value="{{ request.form.b1 }}" placeholder="b₁" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="c1" value="{{ request.form.c1 }}" placeholder="c₁" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="d1" value="{{ request.form.d1 }}" placeholder="d₁" required>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>方程2</td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="a2" value="{{ request.form.a2 }}" placeholder="a₂" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="b2" value="{{ request.form.b2 }}" placeholder="b₂" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="c2" value="{{ request.form.c2 }}" placeholder="c₂" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="d2" value="{{ request.form.d2 }}" placeholder="d₂" required>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>方程3</td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="a3" value="{{ request.form.a3 }}" placeholder="a₃" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="b3" value="{{ request.form.b3 }}" placeholder="b₃" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="c3" value="{{ request.form.c3 }}" placeholder="c₃" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" step="any" class="form-control" name="d3" value="{{ request.form.d3 }}" placeholder="d₃" required>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
 
-                            <div class="row mt-3">
+                        <div class="row mt-3">
 {#                                <div class="col-md-6">#}
 {#                                    <div class="form-check">#}
 {#                                        <input class="form-check-input" type="checkbox"#}
@@ -231,199 +229,199 @@
 {#                                        </label>#}
 {#                                    </div>#}
 {#                                </div>#}
-                                <div class="row mb-3">
-                                    <label class="col-form-label col-md-2">解法选择：</label>
-                                    <div class="col-md-10">
-                                        <div class="btn-group" role="group">
-                                            <input type="radio" class="btn-check" name="method" id="gauss" value="gauss" autocomplete="off" {% if method == 'gauss' %}checked{% endif %}>
-                                            <label class="btn btn-outline-primary" for="gauss">高斯消元法</label>
+                            <div class="row mb-3">
+                                <label class="col-form-label col-md-2">解法选择：</label>
+                                <div class="col-md-10">
+                                    <div class="btn-group" role="group">
+                                        <input type="radio" class="btn-check" name="method" id="gauss" value="gauss" autocomplete="off" {% if method == 'gauss' %}checked{% endif %}>
+                                        <label class="btn btn-outline-primary" for="gauss">高斯消元法</label>
 
-                                            <input type="radio" class="btn-check" name="method" id="cramer" value="cramer" autocomplete="off" {% if method == 'cramer' %}checked{% endif %}>
-                                            <label class="btn btn-outline-primary" for="cramer">克莱姆法则</label>
-                                        </div>
+                                        <input type="radio" class="btn-check" name="method" id="cramer" value="cramer" autocomplete="off" {% if method == 'cramer' %}checked{% endif %}>
+                                        <label class="btn btn-outline-primary" for="cramer">克莱姆法则</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6 text-end">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-calculator me-2"></i>立即求解
-                                    </button>
-                                </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-md-6 text-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-calculator me-2"></i>立即求解
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-                    <!-- 结果展示区保持不变 -->
-                    {% if result %}
-                    <div class="math-card">
+                <!-- 结果展示区保持不变 -->
+                {% if result %}
+                <div class="math-card">
 {#                        <h4 class="mb-3">求解结果</h4>#}
 {#                        <p><strong>判断：</strong>{{ result }}</p>#}
 
-                        {% if latex_solution %}
-                        <p><strong>解：</strong> <span class="katex-render">{{ latex_solution|safe }}</span></p>
-                        {% endif %}
+                    {% if latex_solution %}
+                    <p><strong>解：</strong> <span class="katex-render">{{ latex_solution|safe }}</span></p>
+                    {% endif %}
 
-                        {% if image_url %}
-                        <div class="mt-3">
-                            <img src="{{ image_url }}" alt="三平面图像" class="img-fluid border rounded shadow">
+                    {% if image_url %}
+                    <div class="mt-3">
+                        <img src="{{ image_url }}" alt="三平面图像" class="img-fluid border rounded shadow">
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if result %}
+                <div class="math-card mt-4">
+                    <h4>求解结果：</h4>
+                    <p><strong>{{ message }}</strong></p>
+                    <p>x = {{ result[0] }}, y = {{ result[1] }}, z = {{ result[2] }}</p>
+                    <img src="{{ url_for('plot_solve') }}" class="img-fluid mt-3" alt="平面图像">
+                </div>
+                {% elif message %}
+                <div class="alert alert-warning mt-4">{{ message }}</div>
+                {% endif %}
+
+                {% if method == 'cramer' and det_data %}
+                <!-- 克莱姆法则步骤展示 -->
+                <div class="math-card mt-4">
+                    <h4 class="mb-3">📐 克莱姆法则计算步骤</h4>
+
+                    <!-- 步骤1：系数矩阵行列式 -->
+                    <div class="step-card mb-4">
+                        <div class="step-header text-primary">
+                            <i class="fas fa-calculator me-2"></i>步骤 1：计算系数矩阵行列式 D
                         </div>
-                        {% endif %}
+                        <div class="step-body">
+                            <div class="katex-render">
+                                \[ D = \begin{vmatrix}
+                                {{ det_data.D.latex }}
+                                \end{vmatrix} = {{ "%.3f"|format(det_data.D.value) }} \]
+                            </div>
+                        </div>
                     </div>
-                    {% endif %}
 
-                    {% if result %}
-                    <div class="math-card mt-4">
-                        <h4>求解结果：</h4>
-                        <p><strong>{{ message }}</strong></p>
-                        <p>x = {{ result[0] }}, y = {{ result[1] }}, z = {{ result[2] }}</p>
-                        <img src="{{ url_for('plot_solve') }}" class="img-fluid mt-3" alt="平面图像">
-                    </div>
-                    {% elif message %}
-                    <div class="alert alert-warning mt-4">{{ message }}</div>
-                    {% endif %}
-
-                    {% if method == 'cramer' and det_data %}
-                    <!-- 克莱姆法则步骤展示 -->
-                    <div class="math-card mt-4">
-                        <h4 class="mb-3">📐 克莱姆法则计算步骤</h4>
-
-                        <!-- 步骤1：系数矩阵行列式 -->
+                    {# 仅当行列式D≠0时显示后续步骤 #}
+                    {% if det_data.D.value|abs > 1e-6 %}
+                        <!-- 步骤2：Dx行列式 -->
                         <div class="step-card mb-4">
-                            <div class="step-header text-primary">
-                                <i class="fas fa-calculator me-2"></i>步骤 1：计算系数矩阵行列式 D
+                            <div class="step-header text-success">
+                                <i class="fas fa-exchange-alt me-2"></i>步骤 2：替换第一列计算 Dx
                             </div>
                             <div class="step-body">
                                 <div class="katex-render">
-                                    \[ D = \begin{vmatrix}
-                                    {{ det_data.D.latex }}
-                                    \end{vmatrix} = {{ "%.3f"|format(det_data.D.value) }} \]
+                                    \[ D_x = \begin{vmatrix}
+                                    {{ det_data.Dx.latex }}
+                                    \end{vmatrix} = {{ "%.3f"|format(det_data.Dx.value) }} \]
                                 </div>
                             </div>
                         </div>
 
-                        {# 仅当行列式D≠0时显示后续步骤 #}
-                        {% if det_data.D.value|abs > 1e-6 %}
-                            <!-- 步骤2：Dx行列式 -->
-                            <div class="step-card mb-4">
-                                <div class="step-header text-success">
-                                    <i class="fas fa-exchange-alt me-2"></i>步骤 2：替换第一列计算 Dx
-                                </div>
-                                <div class="step-body">
-                                    <div class="katex-render">
-                                        \[ D_x = \begin{vmatrix}
-                                        {{ det_data.Dx.latex }}
-                                        \end{vmatrix} = {{ "%.3f"|format(det_data.Dx.value) }} \]
-                                    </div>
-                                </div>
+                        <!-- 步骤3：Dy行列式 -->
+                        <div class="step-card mb-4">
+                            <div class="step-header text-info">
+                                <i class="fas fa-retweet me-2"></i>步骤 3：替换第二列计算 Dy
                             </div>
-
-                            <!-- 步骤3：Dy行列式 -->
-                            <div class="step-card mb-4">
-                                <div class="step-header text-info">
-                                    <i class="fas fa-retweet me-2"></i>步骤 3：替换第二列计算 Dy
-                                </div>
-                                <div class="step-body">
-                                    <div class="katex-render">
-                                        \[ D_y = \begin{vmatrix}
-                                        {{ det_data.Dy.latex }}
-                                        \end{vmatrix} = {{ "%.3f"|format(det_data.Dy.value) }} \]
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 步骤4：Dz行列式 -->
-                            <div class="step-card mb-4">
-                                <div class="step-header text-warning">
-                                    <i class="fas fa-sync-alt me-2"></i>步骤 4：替换第三列计算 Dz
-                                </div>
-                                <div class="step-body">
-                                    <div class="katex-render">
-                                        \[ D_z = \begin{vmatrix}
-                                        {{ det_data.Dz.latex }}
-                                        \end{vmatrix} = {{ "%.3f"|format(det_data.Dz.value) }} \]
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 最终计算结果 -->
-                            <div class="result-card bg-light p-3 rounded">
-                                <h5 class="text-danger mb-3">🎉 最终计算结果</h5>
+                            <div class="step-body">
                                 <div class="katex-render">
-                                    \[
-                                    \begin{aligned}
-                                    x &= \frac{D_x}{D} = \frac{ {{ "%.3f"|format(det_data.Dx.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[0] }} \\[2ex]
-                                    y &= \frac{D_y}{D} = \frac{ {{ "%.3f"|format(det_data.Dy.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[1] }} \\[2ex]
-                                    z &= \frac{D_z}{D} = \frac{ {{ "%.3f"|format(det_data.Dz.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[2] }}
-                                    \end{aligned}
-                                    \]
+                                    \[ D_y = \begin{vmatrix}
+                                    {{ det_data.Dy.latex }}
+                                    \end{vmatrix} = {{ "%.3f"|format(det_data.Dy.value) }} \]
                                 </div>
                             </div>
-                        {% else %}
-                            <!-- 行列式D=0时的错误提示 -->
-                            <div class="alert alert-danger mt-3">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                {% if det_data.error %}
-                                    {{ det_data.error }}
-                                {% else %}
-                                    行列式D = 0，无法应用克莱姆法则
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-
-                    {% if method == 'gauss' and gauss_data %}
-                    <!-- 高斯消元步骤展示 -->
-                    <div class="math-card mt-4">
-                        <h4 class="mb-4">🔍 高斯消元过程（共 {{ gauss_data|length }} 步）</h4>
-
-                        <div class="timeline-steps">
-                            {% for step in gauss_data %}
-                            <div class="timeline-step {% if loop.last %}last-step{% endif %}">
-                                <div class="step-marker">
-                                    <span class="step-number">{{ loop.index }}</span>
-                                </div>
-                                <div class="step-content">
-                                    <h5 class="step-title text-primary">
-                                        <i class="fas fa-arrow-circle-right me-2"></i>{{ step.description }}
-                                    </h5>
-                                    <div class="matrix-display bg-white p-2 rounded shadow-sm">
-                                        <div class="katex-render">
-                                            \[ {{ step.latex }} \]
-                                        </div>
-                                    </div>
-                                    {% if not loop.last %}
-                                    <div class="step-arrow">
-                                        <i class="fas fa-angle-double-down text-muted"></i>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% endfor %}
                         </div>
 
-                        <!-- 最终结果 -->
-                        {% if result %}
-                        <div class="final-result bg-success text-white p-3 mt-4 rounded">
-                            <h5 class="mb-3">✅ 消元完成！最终解：</h5>
-                            <div class="katex-render fs-5">
+                        <!-- 步骤4：Dz行列式 -->
+                        <div class="step-card mb-4">
+                            <div class="step-header text-warning">
+                                <i class="fas fa-sync-alt me-2"></i>步骤 4：替换第三列计算 Dz
+                            </div>
+                            <div class="step-body">
+                                <div class="katex-render">
+                                    \[ D_z = \begin{vmatrix}
+                                    {{ det_data.Dz.latex }}
+                                    \end{vmatrix} = {{ "%.3f"|format(det_data.Dz.value) }} \]
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 最终计算结果 -->
+                        <div class="result-card bg-light p-3 rounded">
+                            <h5 class="text-danger mb-3">🎉 最终计算结果</h5>
+                            <div class="katex-render">
                                 \[
-                                \begin{cases}
-                                x = {{ result[0] }} \\[2ex]
-                                y = {{ result[1] }} \\[2ex]
-                                z = {{ result[2] }}
-                                \end{cases}
+                                \begin{aligned}
+                                x &= \frac{D_x}{D} = \frac{ {{ "%.3f"|format(det_data.Dx.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[0] }} \\[2ex]
+                                y &= \frac{D_y}{D} = \frac{ {{ "%.3f"|format(det_data.Dy.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[1] }} \\[2ex]
+                                z &= \frac{D_z}{D} = \frac{ {{ "%.3f"|format(det_data.Dz.value) }} }{ {{ "%.3f"|format(det_data.D.value) }} } = {{ result[2] }}
+                                \end{aligned}
                                 \]
                             </div>
                         </div>
-                        {% endif %}
+                    {% else %}
+                        <!-- 行列式D=0时的错误提示 -->
+                        <div class="alert alert-danger mt-3">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {% if det_data.error %}
+                                {{ det_data.error }}
+                            {% else %}
+                                行列式D = 0，无法应用克莱姆法则
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if method == 'gauss' and gauss_data %}
+                <!-- 高斯消元步骤展示 -->
+                <div class="math-card mt-4">
+                    <h4 class="mb-4">🔍 高斯消元过程（共 {{ gauss_data|length }} 步）</h4>
+
+                    <div class="timeline-steps">
+                        {% for step in gauss_data %}
+                        <div class="timeline-step {% if loop.last %}last-step{% endif %}">
+                            <div class="step-marker">
+                                <span class="step-number">{{ loop.index }}</span>
+                            </div>
+                            <div class="step-content">
+                                <h5 class="step-title text-primary">
+                                    <i class="fas fa-arrow-circle-right me-2"></i>{{ step.description }}
+                                </h5>
+                                <div class="matrix-display bg-white p-2 rounded shadow-sm">
+                                    <div class="katex-render">
+                                        \[ {{ step.latex }} \]
+                                    </div>
+                                </div>
+                                {% if not loop.last %}
+                                <div class="step-arrow">
+                                    <i class="fas fa-angle-double-down text-muted"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- 最终结果 -->
+                    {% if result %}
+                    <div class="final-result bg-success text-white p-3 mt-4 rounded">
+                        <h5 class="mb-3">✅ 消元完成！最终解：</h5>
+                        <div class="katex-render fs-5">
+                            \[
+                            \begin{cases}
+                            x = {{ result[0] }} \\[2ex]
+                            y = {{ result[1] }} \\[2ex]
+                            z = {{ result[2] }}
+                            \end{cases}
+                            \]
+                        </div>
                     </div>
                     {% endif %}
-
-
                 </div>
+                {% endif %}
+
+
             </div>
         </div>
-    </section>
+    </div>
+
 </div>
 {% endblock %}
 
@@ -452,7 +450,17 @@
 .equation-table table {
     margin-bottom: 0;
 }
-
+.math-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    margin: 1.5rem 0;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+}
+.math-card:hover {
+    transform: translateY(-5px);
+}
 .equation-table th {
     background: #f8f9fa!important;  /* 浅灰色背景 */
     color: #2b6cb0!important;       /* 主蓝色文字 */
@@ -493,19 +501,21 @@
     }
 }
 .equation-card {
-    background: white;
-    border-radius: 10px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    margin: 1.5rem 0;
     padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    margin-top: 2rem;
-    {#border-left: 5px solid var(--primary-blue);#}
+    transition: transform 0.3s ease;
 }
-
+.equation-card:hover {
+    transform: translateY(-5px);
+}
 .equation-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-blue);
-    margin-bottom: 1rem;
+    color: #2c3e50;
+    border-left: 4px solid #3498db;
+    padding-left: 15px;
+    margin: 25px 0;
 }
 
 .matrix-inputs .form-control {
@@ -615,6 +625,10 @@
         height: 25px;
         line-height: 21px;
     }
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f1f3f5;
 }
 </style>
 {% endblock %}
