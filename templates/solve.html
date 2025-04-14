@@ -172,46 +172,46 @@
                                         <tr>
                                             <td>方程1</td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="a1" value="{{ request.form.a1 }}" placeholder="a₁" required>
+                                                <input type="number" step="any" class="form-control" name="a1" value="{{ matrix_data.a1 }}" placeholder="a₁" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="b1" value="{{ request.form.b1 }}" placeholder="b₁" required>
+                                                <input type="number" step="any" class="form-control" name="b1" value="{{ matrix_data.b1 }}" placeholder="b₁" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="c1" value="{{ request.form.c1 }}" placeholder="c₁" required>
+                                                <input type="number" step="any" class="form-control" name="c1" value="{{ matrix_data.c1 }}" placeholder="c₁" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="d1" value="{{ request.form.d1 }}" placeholder="d₁" required>
+                                                <input type="number" step="any" class="form-control" name="d1" value="{{ matrix_data.d1 }}" placeholder="d₁" required>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>方程2</td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="a2" value="{{ request.form.a2 }}" placeholder="a₂" required>
+                                                <input type="number" step="any" class="form-control" name="a2" value="{{ matrix_data.a2 }}" placeholder="a₂" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="b2" value="{{ request.form.b2 }}" placeholder="b₂" required>
+                                                <input type="number" step="any" class="form-control" name="b2" value="{{ matrix_data.b2 }}" placeholder="b₂" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="c2" value="{{ request.form.c2 }}" placeholder="c₂" required>
+                                                <input type="number" step="any" class="form-control" name="c2" value="{{ matrix_data.c2 }}" placeholder="c₂" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="d2" value="{{ request.form.d2 }}" placeholder="d₂" required>
+                                                <input type="number" step="any" class="form-control" name="d2" value="{{ matrix_data.d2 }}" placeholder="d₂" required>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>方程3</td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="a3" value="{{ request.form.a3 }}" placeholder="a₃" required>
+                                                <input type="number" step="any" class="form-control" name="a3" value="{{ matrix_data.a3 }}" placeholder="a₃" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="b3" value="{{ request.form.b3 }}" placeholder="b₃" required>
+                                                <input type="number" step="any" class="form-control" name="b3" value="{{ matrix_data.b3 }}" placeholder="b₃" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="c3" value="{{ request.form.c3 }}" placeholder="c₃" required>
+                                                <input type="number" step="any" class="form-control" name="c3" value="{{ matrix_data.c3 }}" placeholder="c₃" required>
                                             </td>
                                             <td>
-                                                <input type="number" step="any" class="form-control" name="d3" value="{{ request.form.d3 }}" placeholder="d₃" required>
+                                                <input type="number" step="any" class="form-control" name="d3" value="{{ matrix_data.d3 }}" placeholder="d₃" required>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -441,6 +441,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
 <style>
+/* 自定义 CSS 文件 */
+.btn-group > .btn {
+  float: none ; /* 强制清除浮动 */
+  position: relative;
+}
 .equation-table {
     background: white;
     border-radius: 8px;

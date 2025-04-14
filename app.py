@@ -78,7 +78,11 @@ def solve():
     message = ""
     show_steps = False
     method = "gauss"  # 默认方法
-    matrix_data = {}  # 存储表单输入值
+    matrix_data = {
+        'a1': '1', 'b1': '3', 'c1': '2', 'd1': '4',
+        'a2': '2', 'b2': '1', 'c2': '4', 'd2': '2',
+        'a3': '3', 'b3': '2', 'c3': '5', 'd3': '1'
+    } # 存储表单输入值
     det_data = {}  # 克莱姆法则数据（字典）
     gauss_data = []  # 高斯消元数据（列表）
 
@@ -150,7 +154,7 @@ def plot_solve():
     return send_file("static/solve/plot.png", mimetype="image/png")
 @app.route("/plot2")
 def plot_basis():
-    return send_file("static/basis/plot.png", mimetype="text/png")
+    return send_file("static/basis/plot.gif", mimetype="text/png")
 
 @app.route("/feature", methods=["GET", "POST"])
 def feature():

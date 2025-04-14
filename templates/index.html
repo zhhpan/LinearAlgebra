@@ -1,6 +1,6 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}线性代数可视化实验室 | 某某大学{% endblock %}
+{% block title %}线性代数可视化虚拟实验室 | 西安电子科技大学{% endblock %}
 
 {% block styles %}
 {{ super() }}
@@ -173,8 +173,8 @@ body {
         <div class="logo-container">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="校徽" class="university-logo">
             <div>
-                <h1 class="header-title">线性代数可视化实验室</h1>
-                <p class="header-subtitle">某某大学数学科学学院 | 交互式教学平台</p>
+                <h1 class="header-title">线性代数可视化虚拟实验室</h1>
+                <p class="header-subtitle">西安电子科技大学 | 交互式教学平台</p>
             </div>
         </div>
     </div>
@@ -197,7 +197,7 @@ body {
                         <p>可视化向量的加法、数乘、点积和叉积的几何意义与计算过程</p>
                         <div class="mt-3">
                             <span class="badge bg-primary me-1">线性组合</span>
-                            <span class="badge bg-warning text-dark">正交投影</span>
+                            <span class="badge bg-warning text-dark">向量平移</span>
                         </div>
                     </div>
                 </div>
@@ -294,8 +294,7 @@ body {
 <!-- 页脚 -->
 <footer class="footer">
     <div class="container text-center">
-        <p>某某大学数学科学学院 © 2023 线性代数教学组</p>
-        <p class="mb-0">地址：某某市某某区某某路123号 | 电话：0123-456789</p>
+        <p>西安电子科技大学 线性代数开发小组</p>
     </div>
 </footer>
 {% endblock %}
