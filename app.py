@@ -178,6 +178,7 @@ def quadratic():
 @app.route('/determinant', methods=["GET", "POST"])
 def determinate():
     gif_url = None
+    default_data={'a': '1', 'b': '2', 'c': '-1', 'd': '2'}
     if request.method == 'POST':
         # 从表单获取矩阵元素
         a = float(request.form['a'])
@@ -185,10 +186,14 @@ def determinate():
         c = float(request.form['c'])
         d = float(request.form['d'])
         A = np.array([[a, b], [c, d]])
+        default_data['a'] = a
+        default_data['b'] = b
+        default_data['c'] = c
+        default_data['d'] = d
         # 生成 GIF
         filename = generate_determinant_gif(A)
         gif_url = f"static/determinant/determinant_area.gif"
-    return render_template('determinant.html', gif_url=gif_url)
+    return render_template('determinant.html', gif_url=gif_url, default_data=default_data)
 
 
 @app.route('/basis', methods=["GET", "POST"])
